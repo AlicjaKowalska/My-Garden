@@ -17,7 +17,7 @@ public class LoadingScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run(){
-                startActivity(new Intent(LoadingScreen.this,MainActivity.class));
+                startActivity(new Intent(LoadingScreen.this, Harmonogram.class));
                 finish();
             }
         },1500);

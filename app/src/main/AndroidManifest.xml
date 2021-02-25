@@ -5,11 +5,17 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="My Garden"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGarden">
-
+        <activity android:name=".PlantInfo"></activity>
+        <activity android:name=".Edit" />
+        <activity android:name=".Plants" />
+        <activity android:name=".Add" />
+        <activity
+            android:name=".Settings"
+            android:label="" />
         <activity android:name=".LoadingScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,10 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".Harmonogram" />
     </application>
 
 </manifest>

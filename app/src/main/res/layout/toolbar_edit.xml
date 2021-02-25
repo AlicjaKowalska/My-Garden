@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:elevation="2dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/previous_add"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:drawableRight="@drawable/previous"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:backgroundTint="#FFFFFF"></com.google.android.material.button.MaterialButton>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="80dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Edytuj roślinę"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"></TextView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/check_add"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="70dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:drawableRight="@drawable/check"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        app:backgroundTint="#FFFFFF"></com.google.android.material.button.MaterialButton>
+
+</androidx.appcompat.widget.Toolbar>
