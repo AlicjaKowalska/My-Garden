@@ -9,6 +9,7 @@
     <include
         android:id="@+id/toolbar_add"
         layout="@layout/toolbar_add"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

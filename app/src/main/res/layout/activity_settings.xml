@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Settings">
 
-    <include android:id="@+id/toolbar_settings"
-    layout="@layout/toolbar_settings" />
+    <include
+        android:id="@+id/toolbar_settings"
+        layout="@layout/toolbar_settings" />
 
     </RelativeLayout>

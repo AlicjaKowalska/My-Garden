@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 public class Harmonogram extends AppCompatActivity {
 
     @Override
@@ -16,10 +18,7 @@ public class Harmonogram extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_harmonogram);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_harmonogram);
-        setSupportActionBar(toolbar);
-
-        Button settings_button = findViewById(R.id.settings);
+        Button settings_button = findViewById(R.id.settings_harmonogram);
         settings_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

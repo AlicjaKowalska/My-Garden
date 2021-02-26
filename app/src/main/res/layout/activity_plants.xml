@@ -6,9 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".Plants">
 
-    <include android:id="@+id/toolbar_plants"
-        layout="@layout/toolbar_plants" />
+    <include
+        android:id="@+id/toolbar_plants"
+        layout="@layout/toolbar_plants"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include android:id="@+id/menubar"
-        layout="@layout/menubar"/>
+    <include
+        android:id="@+id/menubar"
+        layout="@layout/menubar"
+        android:layout_width="405dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

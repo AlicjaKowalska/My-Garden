@@ -1,37 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#00FFFFFF">
+    android:background="#00FFFFFF"
+    android:backgroundTint="#00000000">
 
-    <com.google.android.material.button.MaterialButton
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:drawableLeft="@drawable/previous_r"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:backgroundTint="#00FFFFFF" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/harmonogram_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:drawableLeft="@drawable/edit"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:layout_marginLeft="130dp"
-        app:backgroundTint="#00FFFFFF" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:drawableLeft="@drawable/bin"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:backgroundTint="#00FFFFFF" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/previous_r"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="98dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:drawableEnd="@drawable/previous_r"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                app:backgroundTint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"></com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_plant"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:clickable="true"
+                android:drawableEnd="@drawable/edit"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                app:backgroundTint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/bin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"></com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bin"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="99dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:drawableEnd="@drawable/bin"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                app:backgroundTint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"></com.google.android.material.button.MaterialButton>
 
 
-</androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.circularreveal.CircularRevealRelativeLayout>

@@ -17,9 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="154dp"
-        android:layout_marginTop="312dp"
-        android:layout_marginEnd="154dp"
-        android:layout_marginBottom="312dp"
+        android:scaleY="0.25"
+        android:scaleX="0.25"
         app:srcCompat="@drawable/icon" />
 </RelativeLayout>

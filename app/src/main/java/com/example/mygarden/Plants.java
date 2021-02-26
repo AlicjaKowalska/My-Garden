@@ -15,10 +15,7 @@ public class Plants extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_plants);
-        setSupportActionBar(toolbar);
-
-        Button settings_button = findViewById(R.id.settings);
+        Button settings_button = findViewById(R.id.settings_plants);
         settings_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
