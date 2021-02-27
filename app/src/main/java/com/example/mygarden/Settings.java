@@ -16,7 +16,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Button previous_button = findViewById(R.id.previous_settings); //poprawić przycisk cofania
+        Button previous_button = findViewById(R.id.previous_settings);
         previous_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,7 +15,7 @@ public class Edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Button previous_button = findViewById(R.id.previous_edit); //poprawić przycisk cofania
+        Button previous_button = findViewById(R.id.previous_edit);
         previous_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,8 +23,8 @@ public class Edit extends AppCompatActivity {
             }
         });
 
-        Button settings_button = findViewById(R.id.check_edit);
-        settings_button.setOnClickListener(new View.OnClickListener() {
+        Button check_button = findViewById(R.id.check_edit);
+        check_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Edit.this, PlantInfo.class);
