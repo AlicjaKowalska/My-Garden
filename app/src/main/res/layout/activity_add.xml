@@ -22,51 +22,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/appCompatImageView"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:background="@drawable/text_bar"
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                android:elevation="1dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/plant_photo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plant_photo"></androidx.appcompat.widget.AppCompatImageView>
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="chooseImage"></ImageView>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/plant_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/plant_photo"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatImageView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_plant"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/edit_photo"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                app:layout_constraintBottom_toBottomOf="@+id/plant_photo"
-                app:layout_constraintEnd_toEndOf="@+id/plant_photo"
-                app:layout_constraintHorizontal_bias="0.818"
-                app:layout_constraintStart_toStartOf="@+id/plant_photo"
-                app:layout_constraintTop_toTopOf="@+id/plant_photo"
-                app:layout_constraintVertical_bias="0.838"></com.google.android.material.button.MaterialButton>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/appCompatImageView3"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/text_bar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plant_photo"></androidx.appcompat.widget.AppCompatImageView>
+                app:layout_constraintTop_toBottomOf="@+id/image"></androidx.appcompat.widget.AppCompatImageView>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/plant_name"
@@ -115,27 +94,15 @@
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="300dp"
+                android:layout_width="285dp"
                 android:layout_height="50dp"
+                android:dropDownWidth="match_parent"
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView5"
                 app:layout_constraintEnd_toEndOf="@+id/appCompatImageView5"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/appCompatImageView5"
-                app:layout_constraintTop_toTopOf="@+id/appCompatImageView5"
-                app:layout_constraintVertical_bias="0.423" />
+                app:layout_constraintTop_toTopOf="@+id/appCompatImageView5" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/plant_species"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:hint="Gatunek..."
-                android:textCursorDrawable="@drawable/black_cursor"
-                app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView5"
-                app:layout_constraintEnd_toEndOf="@+id/appCompatImageView5"
-                app:layout_constraintHorizontal_bias="0.208"
-                app:layout_constraintStart_toStartOf="@+id/appCompatImageView5"
-                app:layout_constraintTop_toTopOf="@+id/appCompatImageView5"
-                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -147,18 +114,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/appCompatImageView5"
                 app:srcCompat="@drawable/notes" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/plant_notes"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@null"
-                android:hint="Notatki..."
-                android:textCursorDrawable="@drawable/black_cursor"
+            <ScrollView
+                android:id="@+id/scrollView4"
+                android:layout_width="245dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="0.208"
+                app:layout_constraintHorizontal_bias="0.454"
                 app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                app:layout_constraintTop_toTopOf="@+id/imageView2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/plant_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Notatki..."
+                    android:textCursorDrawable="@drawable/black_cursor" />
+            </ScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
