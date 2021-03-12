@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 public class Plant {
 
+    //private int _id;
     private String name;
     private String localization;
     private String species;
@@ -33,5 +34,8 @@ public class Plant {
 
     public Bitmap getImage() { return image; }
     public void setImage(Bitmap image) { this.image = image; }
+
+    //public int getId() { return _id; }
+    //public void setId(int id) { this._id = id; }
 
 }

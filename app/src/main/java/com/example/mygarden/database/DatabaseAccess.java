@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,8 @@ public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
+
+    Context context;
 
     /**
      * Private constructor to aboid object creation from outside classes.
@@ -66,5 +71,85 @@ public class DatabaseAccess {
         }
         cursor.close();
         return list;
+    }
+
+    public String getInfo(String species) {
+        String info = new String();
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                info=cursor.getString(5);
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return info;
+    }
+
+    public String getWater(String species) {
+        String water = new String();
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                water=cursor.getString(1);
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return water;
+    }
+
+    public String getFertilizer(String species) {
+        String fertilizer = new String();
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                fertilizer=cursor.getString(2);
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return fertilizer;
+    }
+
+    public String getRepot(String species) {
+        String repot = new String();
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                repot=cursor.getString(3);
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return repot;
+    }
+
+    public String getLocal(String species) {
+        String local = new String();
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                local=cursor.getString(4);
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return local;
     }
 }

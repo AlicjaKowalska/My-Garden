@@ -198,12 +198,15 @@
 
             <ImageView
                 android:id="@+id/img_plant"
-                android:layout_width="462dp"
-                android:layout_height="445dp"
+                android:layout_width="match_parent"
+                android:layout_height="375dp"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/plant" />
+                app:srcCompat="@drawable/plant_photo" />
 
             <include
                 android:id="@+id/toolbar_plant_info"

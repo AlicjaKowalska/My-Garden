@@ -36,8 +36,8 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     ImageView photo;
     DBHelper DB;
 
-    private Uri imageFilePath;
-    private Bitmap imageToStore;
+    public Uri imageFilePath;
+    public Bitmap imageToStore;
     private static final int PICK_IMAGE_REQUEST=100;
 
     @Override

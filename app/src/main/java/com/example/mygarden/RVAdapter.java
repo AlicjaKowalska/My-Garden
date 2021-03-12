@@ -3,14 +3,19 @@ package com.example.mygarden;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mygarden.database.Plant;
@@ -47,13 +52,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolderClass>
         rvViewHolderClass.relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, PlantInfo.class);
-                i.putExtra("keyname", plant.getName());
-                i.putExtra("keylocalization", plant.getLocalization());
-                i.putExtra("keyspecies", plant.getSpecies());
-                i.putExtra("keynotes", plant.getNotes());
+                Intent intent = new Intent(context, PlantInfo.class);
+                intent.putExtra("keyname", plant.getName());
+                intent.putExtra("keylocalization", plant.getLocalization());
+                intent.putExtra("keyspecies", plant.getSpecies());
+                intent.putExtra("keynotes", plant.getNotes());
+                intent.putExtra("keyid", i);
                 //i.putExtra("keyphoto", plant.getImage());
-                context.startActivity(i);
+                context.startActivity(intent);
             }
         });
     }

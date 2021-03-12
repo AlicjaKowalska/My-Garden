@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="MyPlantsDB.db";//nazwa bazy danych
     private static int DATABASE_VERSION=1;
-    private static String createTableQuery = "create table my_plants (name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
+    private static String createTableQuery = "create table my_plants (/*_id integer primary key autoincrement," + " */name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imageInBytes;
@@ -79,7 +79,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Plant> getAllPlantsData(){
-        //try{
             SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
             ArrayList<Plant> plantArrayList=new ArrayList<>();
 
@@ -102,11 +101,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 Toast.makeText(context, "Nie ma roślin", Toast.LENGTH_SHORT).show();
                 return null;
             }
-        //}
-        //catch(Exception e) {
-        //    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-         //   return null;
-        //}
     }
 
     /*public Boolean insertData(String name, String localization, String species, String notes, Bitmap image){ //Wypełnianie tabeli
@@ -159,7 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = MyDB.rawQuery("Select * from my_plants where name=?", new String[] {name});
         if (cursor.getCount()>0) {
 
-            long result = MyDB.delete("my_plants", "name=?", new String[]{name}); //contentValues wkładamy do tabeli my_plants
+            long result = MyDB.delete("my_plants", "name=?", new String[]{name});
 
             if (result == -1) return false;
             else
