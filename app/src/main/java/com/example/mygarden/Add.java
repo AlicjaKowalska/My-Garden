@@ -76,74 +76,6 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         this.spinner.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////////////
 
-        ///////////////////////////////button check - insert data/////////////////////////////////////////////////
-        //Button check_button = findViewById(R.id.check_add);
-        //check_button.setOnClickListener(new View.OnClickListener() {
-         //   @Override
-         //   public void onClick(View v) {
-
-                /*String nam = name.getText().toString();
-                String local = localization.getText().toString();
-                String spec = spinner.getSelectedItem().toString();
-                String not = notes.getText().toString();
-                Bitmap phot = imageToStore;
-
-                if (nam.equals(""))
-                    Toast.makeText(Add.this, "Podaj nazwę", Toast.LENGTH_SHORT).show();
-                else if (local.equals(""))
-                    Toast.makeText(Add.this, "Podaj lokalizację", Toast.LENGTH_SHORT).show();
-                else if (spec.equals(""))
-                    Toast.makeText(Add.this, "Podaj gatunek", Toast.LENGTH_SHORT).show();
-                else if (phot==null){
-                    Toast.makeText(Add.this, "Dodaj zdjęcie", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    try{
-                        boolean checkinsertdata = DB.storeImage(nam, local, spec, not, phot);
-                        if (checkinsertdata==true){
-                            Toast.makeText(Add.this,"Dodano roślinę", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(Add.this, "Nie udało się dodać rośliny", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    catch(Exception e){
-                        Toast.makeText(Add.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }*/
-
-                    //Intent i = new Intent(Add.this, Plants.class);
-                    /*i.putExtra("keyname", nam);
-                    i.putExtra("keylocalization", local);
-                    i.putExtra("keyspecies", spec);
-                    i.putExtra("keynotes", not);
-                    i.putExtra("keyphoto", phot);*/
-                    //startActivity(i);
-                //}
-            //}
-        //});
-        //////////////////////////////////////////////////////////////////////////////////////////////
-
-        ///////////////////////////add image/////////////////////////////////////////////////////////
-        /*photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent objectIntent=new Intent();
-                objectIntent.setType("image/*");
-
-                objectIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(objectIntent, PICK_IMAGE_REQUEST);
-            }
-        });*/
-        /////////////////////////////////////////////////////////////////////////////////////////////
-
-        //DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
-        //databaseAccess.open();
-        //String s = species.getText().toString();
-        //String water = databaseAccess.getWater(s);
-        //notes.setText(water);
-        //databaseAccess.close(); //close database connection
-
-
         //////////////////////////////////button - previous////////////////////////////////////////
         Button previous_button = findViewById(R.id.previous_add);
         previous_button.setOnClickListener(new View.OnClickListener() {
@@ -185,11 +117,12 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void storeImage(View view){
+    ////////////////////////////////////store data//////////////////////////////////////////////////
+    public void storeData(View view){
         try{
             if(!name.getText().toString().isEmpty() && !localization.getText().toString().isEmpty() && !notes.getText().toString().isEmpty() && photo.getDrawable()!=null && imageToStore!=null){
-                DB.storeImage(new Plant(name.getText().toString(),localization.getText().toString(),spinner.getSelectedItem().toString(),notes.getText().toString(),imageToStore));
+                Plant plant = new Plant(name.getText().toString(),localization.getText().toString(),spinner.getSelectedItem().toString(),notes.getText().toString(),imageToStore);
+                DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
             }
@@ -202,7 +135,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     ////////////////////////////spinner///////////////////////////////////////////////////////

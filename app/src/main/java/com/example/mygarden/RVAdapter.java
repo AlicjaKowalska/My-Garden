@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Plant;
 
 import java.io.ByteArrayOutputStream;
@@ -52,13 +53,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolderClass>
         rvViewHolderClass.relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView name = (TextView) v.findViewById(android.R.id.text1);
+
                 Intent intent = new Intent(context, PlantInfo.class);
                 intent.putExtra("keyname", plant.getName());
                 intent.putExtra("keylocalization", plant.getLocalization());
                 intent.putExtra("keyspecies", plant.getSpecies());
                 intent.putExtra("keynotes", plant.getNotes());
                 intent.putExtra("keyid", i);
-                //i.putExtra("keyphoto", plant.getImage());
                 context.startActivity(intent);
             }
         });

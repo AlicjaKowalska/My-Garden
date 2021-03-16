@@ -74,7 +74,8 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/text_add"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"></com.google.android.material.button.MaterialButton>
+                app:layout_constraintVertical_bias="0.0"
+                android:onClick="updateData"></com.google.android.material.button.MaterialButton>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

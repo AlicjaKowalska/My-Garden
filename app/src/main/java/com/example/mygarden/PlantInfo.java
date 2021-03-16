@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
 
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -26,8 +28,12 @@ public class PlantInfo extends AppCompatActivity {
 
     TextView name, localization, species, notes;
     TextView info, water, fertilizer, repot, local;
+    String plant_name, plant_localization, plant_species, plant_notes;
     ImageView photo;
+    int id;
+
     DBHelper DB;
+    Plant plant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +57,13 @@ public class PlantInfo extends AppCompatActivity {
         ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
 
         try {
-            int id = getIntent().getIntExtra("keyid", 0);
-            Plant plant = plantArrayList.get(id);
+            id = getIntent().getIntExtra("keyid", 0);
+            plant = plantArrayList.get(id);
 
-            String plant_name = getIntent().getStringExtra("keyname");
-            String plant_localization = getIntent().getStringExtra("keylocalization");
-            String plant_species = getIntent().getStringExtra("keyspecies");
-            String plant_notes = getIntent().getStringExtra("keynotes");
+            plant_name = getIntent().getStringExtra("keyname");
+            plant_localization = getIntent().getStringExtra("keylocalization");
+            plant_species = getIntent().getStringExtra("keyspecies");
+            plant_notes = getIntent().getStringExtra("keynotes");
             Bitmap plant_photo = plant.getImage();
 
             name.setText(plant_name);
@@ -65,7 +71,6 @@ public class PlantInfo extends AppCompatActivity {
             species.setText(plant_species);
             notes.setText(plant_notes);
             photo.setImageBitmap(plant_photo);
-
 
             databaseAccess.open();
             String plant_info = databaseAccess.getInfo(plant_species);
@@ -101,8 +106,36 @@ public class PlantInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(PlantInfo.this, Edit.class);
+                i.putExtra("editid", id);
+                i.putExtra("editname", plant_name);
+                i.putExtra("editlocalization", plant_localization);
+                i.putExtra("editspecies", plant_species);
+                i.putExtra("editnotes", plant_notes);
                 startActivity(i);
             }
         });
+    }
+
+    ///////////////////////////////////////delete data//////////////////////////////////////////////
+    public void deleteData(View view){
+        try{
+                DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+                DB = new DBHelper(this);
+                ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
+                id = getIntent().getIntExtra("keyid", 0);
+                plant = plantArrayList.get(id);
+                int plantid=plant.getId();
+                //id = getIntent().getIntExtra("keyid", 0)+1;
+
+                DB.deleteData(String.valueOf(plantid));
+                Intent i = new Intent(PlantInfo.this, Plants.class);
+                startActivity(i);
+                Toast.makeText(this, "Usunięto roślinę: "+ plant.getId(), Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Nie udało się usunąć rośliny", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nie udało się usunąć rośliny", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -89,18 +89,4 @@ public class Plants extends AppCompatActivity {
             }
         });
     }
-
-
-    /*public void getData(View view){
-        try{
-            objectRvAdapter=new RVAdapter(DB.getAllPlantsData());
-            objectRecyclerView.setHasFixedSize(true);
-
-            objectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            objectRecyclerView.setAdapter(objectRvAdapter);
-        }
-        catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }*/
 }

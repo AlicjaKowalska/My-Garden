@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="MyPlantsDB.db";//nazwa bazy danych
     private static int DATABASE_VERSION=1;
-    private static String createTableQuery = "create table my_plants (/*_id integer primary key autoincrement," + " */name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
+    private static String createTableQuery = "create table my_plants (_id integer primary key autoincrement," + "name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imageInBytes;
@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
         MyDB.execSQL("drop Table if exists my_plants");
     }
 
-    public void storeImage(Plant plant)
+    public void storeData(Plant plant)
     {
         try{
                 SQLiteDatabase objectSqLiteDatabase=this.getWritableDatabase();
@@ -78,6 +78,49 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateData(Plant plant)
+    {
+        try{
+            SQLiteDatabase objectSqLiteDatabase=this.getWritableDatabase();
+            Bitmap imageToStoreBitmap = plant.getImage();
+
+            objectByteArrayOutputStream=new ByteArrayOutputStream();
+            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,100,objectByteArrayOutputStream);
+
+            imageInBytes=objectByteArrayOutputStream.toByteArray();
+            ContentValues objectContentValues=new ContentValues();
+
+            objectContentValues.put("name", plant.getName());
+            objectContentValues.put("localization", plant.getLocalization());
+            objectContentValues.put("species", plant.getSpecies());
+            objectContentValues.put("notes", plant.getNotes());
+            objectContentValues.put("image", imageInBytes);
+
+            long checkIfQueryRuns=objectSqLiteDatabase.update("my_plants",objectContentValues,"_id=?", new String[]{String.valueOf(plant.getId())});
+            if(checkIfQueryRuns!=-1){
+                Toast.makeText(context,"Edytowano roślinę",Toast.LENGTH_SHORT).show();
+                objectSqLiteDatabase.close();
+            }
+            else{
+                Toast.makeText(context,"Nie udało się edytować rośliny",Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch(Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteData(String id)
+    {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        /*Cursor cursor = MyDB.rawQuery("Select * from my_plants where _id=?", new String[]{String.valueOf(plant.getId())});
+        if (cursor.getCount()>0) {
+            long result = MyDB.delete("my_plants", "_id=?", new String[]{String.valueOf(plant.getId())});
+        }*/
+        MyDB.delete("my_plants", "_id=?", new String[] { id });
+        MyDB.close();
+    }
+
     public ArrayList<Plant> getAllPlantsData(){
             SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
             ArrayList<Plant> plantArrayList=new ArrayList<>();
@@ -85,14 +128,17 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_plants", null);
             if(objectCursor.getCount()!= -1){
                 while(objectCursor.moveToNext()){
-                    String nameOfImage=objectCursor.getString(0);
-                    String localization=objectCursor.getString(1);
-                    String species=objectCursor.getString(2);
-                    String notes=objectCursor.getString(3);
-                    byte [] imageBytes = objectCursor.getBlob(4);
+                    Plant plant = new Plant();
+                    plant.setId(Integer.parseInt(objectCursor.getString(0)));
+                    plant.setName(objectCursor.getString(1));
+                    plant.setLocalization(objectCursor.getString(2));
+                    plant.setSpecies(objectCursor.getString(3));
+                    plant.setNotes(objectCursor.getString(4));
+                    byte [] imageBytes = objectCursor.getBlob(5);
 
                     Bitmap objectBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
-                    plantArrayList.add(new Plant(nameOfImage,localization, species, notes, objectBitmap));
+                    plant.setImage(objectBitmap);
+                    plantArrayList.add(plant);
                 }
 
                 return plantArrayList;
@@ -102,74 +148,5 @@ public class DBHelper extends SQLiteOpenHelper {
                 return null;
             }
     }
-
-    /*public Boolean insertData(String name, String localization, String species, String notes, Bitmap image){ //Wypełnianie tabeli
-            SQLiteDatabase MyDB = this.getWritableDatabase();
-
-            Bitmap imageToStoreBitmap = image;
-            objectByteArrayOutputStream = new ByteArrayOutputStream();
-            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG, 100, objectByteArrayOutputStream);
-            imageInBytes = objectByteArrayOutputStream.toByteArray();
-
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("name", name);
-            contentValues.put("localization", localization);
-            contentValues.put("species", species);
-            contentValues.put("notes", notes);
-            contentValues.put("image", imageInBytes);
-
-            long result = MyDB.insert("my_plants", null, contentValues); //contentValues wkładamy do tabeli my_plants
-
-            if (result != 0) return true;
-            else
-                return false;
-    }
-
-    public Boolean updateData(String name, String localization, String species, String notes){ //edytowanie tabeli
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("localization", localization);
-        contentValues.put("species", species);
-        contentValues.put("notes", notes);
-        Cursor cursor = MyDB.rawQuery("Select * from my_plants where name=?", new String[] {name});
-        if (cursor.getCount()>0) {
-
-            long result = MyDB.update("my_plants", contentValues, "name=?", new String[]{name}); //contentValues wkładamy do tabeli my_plants
-
-            if (result == -1) return false;
-            else
-                return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    public Boolean deleteData(String name){ //usuwanie z tabeli
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-        Cursor cursor = MyDB.rawQuery("Select * from my_plants where name=?", new String[] {name});
-        if (cursor.getCount()>0) {
-
-            long result = MyDB.delete("my_plants", "name=?", new String[]{name});
-
-            if (result == -1) return false;
-            else
-                return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    public Cursor getData() { //wyświetlanie tabeli
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-        Cursor cursor = MyDB.rawQuery("Select * from my_plants", null);
-        return cursor;
-    }*/
 
 }
