@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -62,13 +63,12 @@ public class Edit extends AppCompatActivity {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
         List<String> plant_species = databaseAccess.getSpecies();
-        databaseAccess.close();
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, plant_species);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         this.species.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////////////
-
         name = (TextView) findViewById(R.id.edit_name);
         localization = (TextView) findViewById(R.id.edit_localization);
         notes = (TextView) findViewById(R.id.edit_notes);
@@ -88,10 +88,11 @@ public class Edit extends AppCompatActivity {
 
         name.setText(edit_name);
         localization.setText(edit_localization);
-        //species.setContentDescription(edit_species);
+        species.setSelection(plant_species.indexOf(edit_species));
         notes.setText(edit_notes);
         photo.setImageBitmap(edit_photo);
 
+        databaseAccess.close();
         Button previous_button = findViewById(R.id.previous_edit);
         previous_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,25 +105,21 @@ public class Edit extends AppCompatActivity {
     ///////////////////////////////////////update data//////////////////////////////////////////////
     public void updateData(View view){
         try{
-            if(!name.getText().toString().isEmpty() && !localization.getText().toString().isEmpty() && !notes.getText().toString().isEmpty() && photo.getDrawable()!=null && imageToStore!=null){
-                edit_id = getIntent().getIntExtra("editid", 0);
-                DatabaseAccess dbAccess=DatabaseAccess.getInstance(getApplicationContext());
-                DB = new DBHelper(this);
-                ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
-                plant = plantArrayList.get(edit_id);
+            edit_id = getIntent().getIntExtra("editid", 0);
+            DatabaseAccess dbAccess=DatabaseAccess.getInstance(getApplicationContext());
+            DB = new DBHelper(this);
+            ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
+            plant = plantArrayList.get(edit_id);
 
-                plant.setName(name.getText().toString());
-                plant.setLocalization(localization.getText().toString());
-                plant.setSpecies(species.getSelectedItem().toString());
-                plant.setNotes(notes.getText().toString());
-                plant.setImage(imageToStore);
-                DB.updateData(plant);
-                Intent i = new Intent(Edit.this, Plants.class);
-                startActivity(i);
-            }
-            else{
-                Toast.makeText(this, "Wypełnij wszystkie pola i dodaj zdjęcie", Toast.LENGTH_SHORT).show();
-            }
+            if(name.getText().toString().equals(plant.getName())) plant.setName(plant.getName()); else plant.setName(name.getText().toString());
+            if(localization.getText().toString().equals(plant.getLocalization())) plant.setLocalization(plant.getLocalization()); else plant.setLocalization(localization.getText().toString());
+            if(species.getSelectedItem().toString().equals(plant.getSpecies())) plant.setSpecies(plant.getSpecies()); else plant.setSpecies(species.getSelectedItem().toString());
+            if(notes.getText().toString().equals(plant.getNotes())) plant.setNotes(plant.getNotes());  else  plant.setNotes(notes.getText().toString());
+            if(imageToStore==null) plant.setImage(plant.getImage()); else plant.setImage(imageToStore);
+
+            DB.updateData(plant);
+            Intent i = new Intent(Edit.this, Plants.class);
+            startActivity(i);
 
         }
         catch (Exception e){

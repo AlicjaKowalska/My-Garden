@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -120,14 +121,24 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     ////////////////////////////////////store data//////////////////////////////////////////////////
     public void storeData(View view){
         try{
-            if(!name.getText().toString().isEmpty() && !localization.getText().toString().isEmpty() && !notes.getText().toString().isEmpty() && photo.getDrawable()!=null && imageToStore!=null){
+            if(name.getText().toString().isEmpty()){
+                Toast.makeText(this, "Podaj nazwę rośliny", Toast.LENGTH_SHORT).show();
+            }
+            else if(localization.getText().toString().isEmpty()){
+                Toast.makeText(this, "Podaj lokalizację rośliny", Toast.LENGTH_SHORT).show();
+            }
+            else if(!name.getText().toString().isEmpty() && !localization.getText().toString().isEmpty() && photo.getDrawable()!=null && imageToStore!=null){
                 Plant plant = new Plant(name.getText().toString(),localization.getText().toString(),spinner.getSelectedItem().toString(),notes.getText().toString(),imageToStore);
                 DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
             }
             else{
-                Toast.makeText(this, "Wypełnij wszystkie pola i dodaj zdjęcie", Toast.LENGTH_SHORT).show();
+                Bitmap plant_img = BitmapFactory.decodeResource(this.getResources(), R.drawable.plant_photo);
+                Plant plant = new Plant(name.getText().toString(),localization.getText().toString(),spinner.getSelectedItem().toString(),notes.getText().toString(),plant_img);
+                DB.storeData(plant);
+                Intent i = new Intent(Add.this, Plants.class);
+                startActivity(i);
             }
             
         }
