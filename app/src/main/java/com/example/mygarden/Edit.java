@@ -3,7 +3,12 @@ package com.example.mygarden;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorWindow;
@@ -25,8 +30,11 @@ import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Edit extends AppCompatActivity {
@@ -121,6 +129,50 @@ public class Edit extends AppCompatActivity {
             Intent i = new Intent(Edit.this, Plants.class);
             startActivity(i);
 
+
+            ///////////////////////////////notifications////////////////////////////////////////////
+            int time = 1*24*60*60*1000; // 1 dzień
+            int time1 = 1*60*1000;
+            int time2 = 2*60*1000;
+            int time3 = 3*60*1000;
+
+            String n, l;
+            Bitmap p;
+
+            if(name.getText().toString().equals(plant.getName())) n = plant.getName(); else n = name.getText().toString();
+            if(localization.getText().toString().equals(plant.getLocalization())) l = plant.getLocalization(); else l = localization.getText().toString();
+            if(imageToStore==null) p = plant.getImage(); else p = imageToStore;
+
+            ByteArrayOutputStream blob = new ByteArrayOutputStream();
+            p.compress(Bitmap.CompressFormat.JPEG, 0 , blob);
+            byte[] picture = blob.toByteArray();
+
+            int id2 = (int) System.currentTimeMillis();
+            com.example.mygarden.Notification notif = new com.example.mygarden.Notification(plant.getId(),id2);
+            PlantInfo.notifications.add(notif);
+
+            int j=0;
+            if(PlantInfo.notifications.size()>0) {
+                while (j < PlantInfo.notifications.size()) {
+                    if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
+                        int id = PlantInfo.notifications.get(j).getNotificationID();
+                        createNotificationChannel();
+                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, time1,true);
+                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, time1,true);
+                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, time1,true);
+                        NotificationManagerCompat.from(this).cancel(id);
+                        NotificationManagerCompat.from(this).cancel(id+1);
+                        NotificationManagerCompat.from(this).cancel(id+2);
+                        com.example.mygarden.Notification notif1 = new com.example.mygarden.Notification(plant.getId(),id);
+                        PlantInfo.notifications.remove(notif1);
+                        createNotificationChannel();
+                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, time1,false);
+                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, time1,false);
+                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, time1,false);
+                    }
+                    j++;
+                }
+            }
         }
         catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -157,5 +209,52 @@ public class Edit extends AppCompatActivity {
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            CharSequence name = "Channel";
+            String description = "Channel for notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = null;
+            channel = new NotificationChannel("notificationID", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void generateNotification(byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time, boolean cancel){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.SECOND,00);
+        long timeInMillis = time;//86400000=1 dzień
+
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        intent.putExtra("keynotificationicon", notificationicon);
+        intent.putExtra("keyname", name);
+        intent.putExtra("keyactivity", activity);
+        intent.putExtra("keyactivitydetails", activitydetails);
+        intent.putExtra("keyid", id);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //int RQS_1 = (int) System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
+
+
+        Intent intent2 = new Intent(this, TaskBroadcast.class);
+        intent2.putExtra("keyname",name);
+        intent2.putExtra("keyactivity", activity);
+        intent2.putExtra("keylocalization", localization);
+        intent2.putExtra("keyphoto", image);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
+        if(cancel==true) alarmManager.cancel(pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
+        if(cancel==true) alarmManager.cancel(pendingIntent2);
+    }
 }
 

@@ -72,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 else{
                     Toast.makeText(context,"Nie udało się dodać rośliny",Toast.LENGTH_SHORT).show();
                 }
+
         }
         catch(Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -119,6 +120,37 @@ public class DBHelper extends SQLiteOpenHelper {
         }*/
         MyDB.delete("my_plants", "_id=?", new String[] { id });
         MyDB.close();
+    }
+
+    public Plant getPlant(int id)
+    {
+        Plant plant = new Plant();
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from my_plants",null);
+        if(cursor.getCount()>0) {
+            while(cursor.moveToNext()) {
+                if(cursor.getString(0).equals(String.valueOf(id))) {
+                    plant.setId(Integer.parseInt(cursor.getString(0)));
+                    plant.setName(cursor.getString(1));
+                    plant.setLocalization(cursor.getString(2));
+                    plant.setSpecies(cursor.getString(3));
+                    plant.setNotes(cursor.getString(4));
+                    byte[] imageBytes = cursor.getBlob(5);
+
+                    Bitmap objectBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    plant.setImage(objectBitmap);
+
+                    return plant;
+                }
+                else{
+                    return null;
+                }
+            }
+            return plant;
+        }
+        else{
+            return null;
+        }
     }
 
     public ArrayList<Plant> getAllPlantsData(){

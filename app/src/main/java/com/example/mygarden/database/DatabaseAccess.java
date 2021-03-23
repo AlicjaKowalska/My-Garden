@@ -152,4 +152,22 @@ public class DatabaseAccess {
         cursor.close();
         return local;
     }
+
+    public int[] getWFR(String species) {
+        int[] wfr = new int[3];
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                wfr[0]=cursor.getInt(1); //water
+                wfr[1]=cursor.getInt(2); //fertilizer
+                wfr[2]=cursor.getInt(3); //repot
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return wfr;
+    }
 }

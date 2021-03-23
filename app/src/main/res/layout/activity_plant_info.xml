@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:fontFamily="sans-serif-black"
-                android:text="Woda"
+                android:text="Lokalizacja"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView10"

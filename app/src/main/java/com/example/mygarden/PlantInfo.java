@@ -1,13 +1,21 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +31,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class PlantInfo extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "notification_id";
     TextView name, localization, species, notes;
     TextView info, water, fertilizer, repot, local;
     String plant_name, plant_localization, plant_species, plant_notes;
@@ -34,6 +45,8 @@ public class PlantInfo extends AppCompatActivity {
 
     DBHelper DB;
     Plant plant;
+
+    public static ArrayList<com.example.mygarden.Notification> notifications = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,20 +135,106 @@ public class PlantInfo extends AppCompatActivity {
                 DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
                 DB = new DBHelper(this);
                 ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
+
                 id = getIntent().getIntExtra("keyid", 0);
                 plant = plantArrayList.get(id);
                 int plantid=plant.getId();
-                //id = getIntent().getIntExtra("keyid", 0)+1;
 
                 DB.deleteData(String.valueOf(plantid));
                 Intent i = new Intent(PlantInfo.this, Plants.class);
                 startActivity(i);
-                Toast.makeText(this, "Usunięto roślinę: "+ plant.getId(), Toast.LENGTH_SHORT).show();
+
+                ///////////////notifications////////////////////////////////////////////////////////
+                DatabaseAccess databaseAccess2=DatabaseAccess.getInstance(getApplicationContext());
+
+                databaseAccess.open();
+                int[] wfr = databaseAccess.getWFR(plant_species);
+                int water = wfr[0];
+                int fertilizer = wfr[1];
+                int  repot = wfr[2];
+                databaseAccess.close();
+
+                GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 12);
+                calendar.set(Calendar.MINUTE, 00);
+                calendar.set(Calendar.SECOND,00);
+
+            int time = 1*24*60*60*1000; // 1 dzień
+            int time1 = 1*60*1000;
+            int time2 = 2*60*1000;
+            int time3 = 3*60*1000;
+
+            int j=0;
+            if(notifications.size()>0) {
+                    while (j < notifications.size()) {
+                        if (notifications.get(j).getPlantID()==plantid) {
+                            int id = notifications.get(j).getNotificationID();
+                            createNotificationChannel();
+                            generateNotification(null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, time1);
+                            generateNotification(null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, time1);
+                            generateNotification(null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, time1);
+                            NotificationManagerCompat.from(this).cancel(id);
+                            NotificationManagerCompat.from(this).cancel(id+1);
+                            NotificationManagerCompat.from(this).cancel(id+2);
+                            com.example.mygarden.Notification notif1 = new com.example.mygarden.Notification(plant.getId(),id);
+                            PlantInfo.notifications.remove(notif1);
+                        }
+                        j++;
+                    }
+                }
+                ////////////////////////////////////////////////////////////////////////////////////
+
         }
         catch (Exception e){
             Toast.makeText(this, "Nie udało się usunąć rośliny", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Nie udało się usunąć rośliny", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            CharSequence name = "Channel";
+            String description = "Channel for notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = null;
+            channel = new NotificationChannel("notificationID", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void generateNotification(byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.SECOND,00);
+        long timeInMillis = time;//86400000=1 dzień
+
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        intent.putExtra("keynotificationicon", notificationicon);
+        intent.putExtra("keyname", name);
+        intent.putExtra("keyactivity", activity);
+        intent.putExtra("keyactivitydetails", activitydetails);
+        intent.putExtra("keyid", id);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //int RQS_1 = (int) System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
+
+
+        Intent intent2 = new Intent(this, TaskBroadcast.class);
+        intent2.putExtra("keyname",name);
+        intent2.putExtra("keyactivity", activity);
+        intent2.putExtra("keylocalization", localization);
+        intent2.putExtra("keyphoto", image);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
+        alarmManager.cancel(pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
+        alarmManager.cancel(pendingIntent2);
     }
 }
