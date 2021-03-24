@@ -11,6 +11,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,8 @@ import android.widget.Toast;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
+import com.example.mygarden.database.Task;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -139,24 +142,19 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
+
                 /////////////////////////////////////notifications//////////////////////////////////////
-            /*DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+                DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
 
-            databaseAccess.open();
-            int[] wfr = databaseAccess.getWFR(spinner.getSelectedItem().toString());
-            int water = wfr[0];
-            int fertilizer = wfr[1];
-            int  repot = wfr[2];
-            databaseAccess.close();*/
-
-
-                int time = 1*24*60*60*1000; // 1 dzień
-                int time1 = 1*60*1000;
-                int time2 = 2*60*1000;
-                int time3 = 3*60*1000;
+                databaseAccess.open();
+                int[] wfr = databaseAccess.getWFR(spinner.getSelectedItem().toString());
+                int water = wfr[0] *24* 60*60*1000;
+                int fertilizer = wfr[1]*24* 60*60*1000;
+                int  repot = wfr[2]*24* 60*60*1000;
+                databaseAccess.close();
 
                 ByteArrayOutputStream blob = new ByteArrayOutputStream();
-                imageToStore.compress(Bitmap.CompressFormat.JPEG, 0 /* Ignored for PNGs */, blob);
+                imageToStore.compress(Bitmap.CompressFormat.JPEG, 0 , blob);
                 byte[] picture = blob.toByteArray();
                 
                 int notificationid = (int) System.currentTimeMillis();
@@ -169,9 +167,9 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
-                generateNotification(picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, time2);
-                generateNotification(picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, time2);
-                generateNotification(picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, time2);
+                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
+                generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
+                generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
 
             } else {
                 Bitmap plant_img = BitmapFactory.decodeResource(this.getResources(), R.drawable.plant_photo);
@@ -179,6 +177,34 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
+
+                /////////////////////////////////////notifications//////////////////////////////////////
+                DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+
+                databaseAccess.open();
+                int[] wfr = databaseAccess.getWFR(spinner.getSelectedItem().toString());
+                int water = wfr[0];
+                int fertilizer = wfr[1];
+                int  repot = wfr[2];
+                databaseAccess.close();
+
+                ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                plant_img.compress(Bitmap.CompressFormat.JPEG, 0 , blob);
+                byte[] picture = blob.toByteArray();
+
+                int notificationid = (int) System.currentTimeMillis();
+
+                int l_roślin = DB.getAllPlantsData().size()-1;
+                ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
+                Plant p = plantArrayList.get(l_roślin);
+
+                com.example.mygarden.Notification notif = new com.example.mygarden.Notification(p.getId(),notificationid);
+                PlantInfo.notifications.add(notif);
+
+                createNotificationChannel();
+                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
+                generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
+                generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
             }
 
         }
@@ -203,7 +229,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         }
     }
 
-    public void generateNotification(byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
+    public void generateNotification(int plantID, byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -219,11 +245,11 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         intent.putExtra("keyactivitydetails", activitydetails);
         intent.putExtra("keyid", id);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //int RQS_1 = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
 
 
         Intent intent2 = new Intent(this, TaskBroadcast.class);
+        intent2.putExtra("keyplantid", plantID);
         intent2.putExtra("keyname",name);
         intent2.putExtra("keyactivity", activity);
         intent2.putExtra("keylocalization", localization);

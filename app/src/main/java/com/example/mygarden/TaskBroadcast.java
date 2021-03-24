@@ -7,20 +7,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.content.SharedPreferences;
 
+import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Task;
+import com.google.gson.Gson;
 
 public class TaskBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        int plantid = intent.getIntExtra("keyplantid",0);
         String name = intent.getStringExtra("keyname");
         String activity = intent.getStringExtra("keyactivity");
         String localization = intent.getStringExtra("keylocalization");
         byte[] photo = intent.getByteArrayExtra("keyphoto");
 
         Bitmap plant_img = BitmapFactory.decodeByteArray(photo, 0 , photo.length);
-        //Bitmap plant_img = BitmapFactory.decodeResource(context.getResources(), R.drawable.plant_photo);
 
-        Task task = new Task(activity, name, localization, plant_img);
-        Harmonogram.taskArrayList.add(task);
+        Task task = new Task(plantid, activity, name, localization, plant_img);
+        DBHelper DB = new DBHelper(context);
+        DB.addTask(task);
     }
 }

@@ -22,7 +22,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="MyPlantsDB.db";//nazwa bazy danych
     private static int DATABASE_VERSION=1;
-    private static String createTableQuery = "create table my_plants (_id integer primary key autoincrement," + "name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
+    private static String createTableQuery = "create table my_plants(_id integer primary key autoincrement," + "name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
+    private static String createTableQuery2 = "create table my_tasks(_idTask integer primary key autoincrement," +"plantID integer"+ ",activity TEXT" + ",name TEXT" + ",localization TEXT" + ", image BLOB)";
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imageInBytes;
@@ -36,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase MyDB) {
         try {
             MyDB.execSQL(createTableQuery);  //kolumny tabeli my_plants
+            MyDB.execSQL(createTableQuery2);  //kolumny tabeli my_tasks
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -44,6 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase MyDB, int oldVersion, int newVersion) {
         MyDB.execSQL("drop Table if exists my_plants");
+        MyDB.execSQL("drop Table if exists my_tasks");
     }
 
     public void storeData(Plant plant)
@@ -53,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Bitmap imageToStoreBitmap = plant.getImage();
 
                 objectByteArrayOutputStream=new ByteArrayOutputStream();
-                imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,100,objectByteArrayOutputStream);
+                imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,50,objectByteArrayOutputStream);
 
                 imageInBytes=objectByteArrayOutputStream.toByteArray();
                 ContentValues objectContentValues=new ContentValues();
@@ -86,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Bitmap imageToStoreBitmap = plant.getImage();
 
             objectByteArrayOutputStream=new ByteArrayOutputStream();
-            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,100,objectByteArrayOutputStream);
+            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,50,objectByteArrayOutputStream);
 
             imageInBytes=objectByteArrayOutputStream.toByteArray();
             ContentValues objectContentValues=new ContentValues();
@@ -122,37 +125,6 @@ public class DBHelper extends SQLiteOpenHelper {
         MyDB.close();
     }
 
-    public Plant getPlant(int id)
-    {
-        Plant plant = new Plant();
-        SQLiteDatabase MyDB = this.getReadableDatabase();
-        Cursor cursor = MyDB.rawQuery("Select * from my_plants",null);
-        if(cursor.getCount()>0) {
-            while(cursor.moveToNext()) {
-                if(cursor.getString(0).equals(String.valueOf(id))) {
-                    plant.setId(Integer.parseInt(cursor.getString(0)));
-                    plant.setName(cursor.getString(1));
-                    plant.setLocalization(cursor.getString(2));
-                    plant.setSpecies(cursor.getString(3));
-                    plant.setNotes(cursor.getString(4));
-                    byte[] imageBytes = cursor.getBlob(5);
-
-                    Bitmap objectBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    plant.setImage(objectBitmap);
-
-                    return plant;
-                }
-                else{
-                    return null;
-                }
-            }
-            return plant;
-        }
-        else{
-            return null;
-        }
-    }
-
     public ArrayList<Plant> getAllPlantsData(){
             SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
             ArrayList<Plant> plantArrayList=new ArrayList<>();
@@ -181,4 +153,108 @@ public class DBHelper extends SQLiteOpenHelper {
             }
     }
 
+    ///////////////////////////////////////////tasks////////////////////////////////////////////////
+    public void addTask(Task task)
+    {
+        try{
+            SQLiteDatabase objectSqLiteDatabase=this.getWritableDatabase();
+            Bitmap imageToStoreBitmap = task.getImage();
+
+            objectByteArrayOutputStream=new ByteArrayOutputStream();
+            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,50,objectByteArrayOutputStream);
+
+            imageInBytes=objectByteArrayOutputStream.toByteArray();
+            ContentValues objectContentValues=new ContentValues();
+
+            objectContentValues.put("plantID", task.getPlantId());
+            objectContentValues.put("activity", task.getActivity());
+            objectContentValues.put("name", task.getName());
+            objectContentValues.put("localization", task.getLocalization());
+            objectContentValues.put("image", imageInBytes);
+
+            long checkIfQueryRuns=objectSqLiteDatabase.insert("my_tasks",null, objectContentValues);
+            if(checkIfQueryRuns!=-1){
+                Toast.makeText(context,"Dodano zadanie",Toast.LENGTH_SHORT).show();
+                objectSqLiteDatabase.close();
+            }
+            else{
+                Toast.makeText(context,"Nie udało się dodać zadania",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        catch(Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void updateTask(Task task)
+    {
+        try{
+            SQLiteDatabase objectSqLiteDatabase=this.getWritableDatabase();
+            Bitmap imageToStoreBitmap = task.getImage();
+
+            objectByteArrayOutputStream=new ByteArrayOutputStream();
+            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,50,objectByteArrayOutputStream);
+
+            imageInBytes=objectByteArrayOutputStream.toByteArray();
+            ContentValues objectContentValues=new ContentValues();
+
+            objectContentValues.put("plantID",task.getPlantId());
+            objectContentValues.put("activity", task.getActivity());
+            objectContentValues.put("name", task.getName());
+            objectContentValues.put("localization", task.getLocalization());
+            objectContentValues.put("image", imageInBytes);
+
+            long checkIfQueryRuns=objectSqLiteDatabase.update("my_tasks",objectContentValues,"_id=?", new String[]{String.valueOf(task.getId())});
+            if(checkIfQueryRuns!=-1){
+                Toast.makeText(context,"Edytowano zadanie",Toast.LENGTH_SHORT).show();
+                objectSqLiteDatabase.close();
+            }
+            else{
+                Toast.makeText(context,"Nie udało się edytować zadania",Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch(Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteTask(String id)
+    {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        /*Cursor cursor = MyDB.rawQuery("Select * from my_plants where _id=?", new String[]{String.valueOf(plant.getId())});
+        if (cursor.getCount()>0) {
+            long result = MyDB.delete("my_plants", "_id=?", new String[]{String.valueOf(plant.getId())});
+        }*/
+        MyDB.delete("my_tasks", "_idTask=?", new String[] { id });
+        MyDB.close();
+    }
+
+    public ArrayList<Task> getAllTasks(){
+        SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
+        ArrayList<Task> taskArrayList=new ArrayList<>();
+
+        Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_tasks", null);
+        if(objectCursor.getCount()!= -1){
+            while(objectCursor.moveToNext()){
+                Task task = new Task();
+                task.setId(Integer.parseInt(objectCursor.getString(0)));
+                task.setPlantId(objectCursor.getInt(1));
+                task.setActivity(objectCursor.getString(2));
+                task.setName(objectCursor.getString(3));
+                task.setLocalization(objectCursor.getString(4));
+                byte [] imageBytes = objectCursor.getBlob(5);
+
+                Bitmap objectBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
+                task.setImage(objectBitmap);
+                taskArrayList.add(task);
+            }
+
+            return taskArrayList;
+        }
+        else{
+            Toast.makeText(context, "Nie ma zadań", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
 }

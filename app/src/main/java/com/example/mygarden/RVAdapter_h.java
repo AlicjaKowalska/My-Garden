@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
 import com.example.mygarden.database.Task;
@@ -24,6 +25,8 @@ import com.example.mygarden.database.Task;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderClassH>{
     ArrayList<Task> taskList;
@@ -53,7 +56,8 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
         rvViewHolderClass.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                taskList.remove(task);
+                DBHelper DB = new DBHelper(context);
+                DB.deleteTask(String.valueOf(task.getId()));
             }
         });
     }
@@ -83,5 +87,4 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
             layout=itemView.findViewById(R.id.sr_layout);
         }
     }
-
 }

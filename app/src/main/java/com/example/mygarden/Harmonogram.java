@@ -21,7 +21,10 @@ import android.widget.Toast;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Task;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -31,7 +34,6 @@ public class Harmonogram extends AppCompatActivity {
     DBHelper DB;
     RecyclerView objectRecyclerView;
     RVAdapter_h objectRvAdapter;
-    public static ArrayList<Task> taskArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +43,14 @@ public class Harmonogram extends AppCompatActivity {
         try{
             objectRecyclerView=findViewById(R.id.tasksRV);
             DB = new DBHelper(this);
-
-            //SaveIntoSharedPrefs("TaskList", objectRecyclerView);
         }
         catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         try{
-            if(!taskArrayList.isEmpty()) {
-                objectRvAdapter = new RVAdapter_h(taskArrayList, this);
+            if(!DB.getAllTasks().isEmpty()) {
+                objectRvAdapter = new RVAdapter_h(DB.getAllTasks(), this);
                 objectRecyclerView.setHasFixedSize(true);
 
                 objectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -103,16 +103,4 @@ public class Harmonogram extends AppCompatActivity {
         });
 
     }
-
-    /*public void SaveIntoSharedPrefs(String key, RecyclerView value){
-        SharedPreferences sp = this.getSharedPreferences("SP",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(key,value);
-        editor.apply();
-    }
-
-    public boolean Update(String key){
-        SharedPreferences sp = this.getSharedPreferences("SP",Context.MODE_PRIVATE);
-        return sp.getBoolean(key, false);
-    }*/
 }

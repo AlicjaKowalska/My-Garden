@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
+import com.example.mygarden.database.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -40,7 +42,7 @@ public class PlantInfo extends AppCompatActivity {
     TextView name, localization, species, notes;
     TextView info, water, fertilizer, repot, local;
     String plant_name, plant_localization, plant_species, plant_notes;
-    ImageView photo;
+    ImageView photo, localPic;
     int id;
 
     DBHelper DB;
@@ -52,6 +54,8 @@ public class PlantInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_info);
+
+        localPic = (ImageView) findViewById(R.id.sun);
 
         name = (TextView) findViewById(R.id.plantinfo_name);
         localization = (TextView) findViewById(R.id.plantinfo_localization);
@@ -97,8 +101,15 @@ public class PlantInfo extends AppCompatActivity {
             fertilizer.setText(plant_fertilizer);
             repot.setText(plant_repot);
             local.setText(plant_local);
-            databaseAccess.close();
 
+            Drawable penumbra = getDrawable(R.drawable.penumbra);
+            Drawable direct = getDrawable(R.drawable.direct);
+            Drawable shadow = getDrawable(R.drawable.shadow);
+            if(plant_local.equals("cień")) localPic.setImageDrawable(shadow);
+            if(plant_local.equals("półcień")) localPic.setImageDrawable(penumbra);
+            if(plant_local.equals("bezpośredni")) localPic.setImageDrawable(direct);
+
+            databaseAccess.close();
         }
         catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -149,39 +160,31 @@ public class PlantInfo extends AppCompatActivity {
 
                 databaseAccess.open();
                 int[] wfr = databaseAccess.getWFR(plant_species);
-                int water = wfr[0];
-                int fertilizer = wfr[1];
-                int  repot = wfr[2];
+                int water = wfr[0] *24* 60*60*1000;
+                int fertilizer = wfr[1]*24* 60*60*1000;
+                int  repot = wfr[2]*24* 60*60*1000;
                 databaseAccess.close();
 
-                GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 12);
-                calendar.set(Calendar.MINUTE, 00);
-                calendar.set(Calendar.SECOND,00);
 
-            int time = 1*24*60*60*1000; // 1 dzień
-            int time1 = 1*60*1000;
-            int time2 = 2*60*1000;
-            int time3 = 3*60*1000;
-
-            int j=0;
-            if(notifications.size()>0) {
+                int j=0;
+                if(notifications.size()>0) {
                     while (j < notifications.size()) {
                         if (notifications.get(j).getPlantID()==plantid) {
                             int id = notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, time1);
-                            generateNotification(null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, time1);
-                            generateNotification(null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, time1);
+                            generateNotification(plant.getId(),null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, water);
+                            generateNotification(plant.getId(),null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, fertilizer);
+                            generateNotification(plant.getId(),null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, repot);
                             NotificationManagerCompat.from(this).cancel(id);
                             NotificationManagerCompat.from(this).cancel(id+1);
                             NotificationManagerCompat.from(this).cancel(id+2);
-                            com.example.mygarden.Notification notif1 = new com.example.mygarden.Notification(plant.getId(),id);
-                            PlantInfo.notifications.remove(notif1);
+                            com.example.mygarden.Notification notif = new com.example.mygarden.Notification(plant.getId(),id);
+                            PlantInfo.notifications.remove(notif);
                         }
                         j++;
                     }
                 }
+
                 ////////////////////////////////////////////////////////////////////////////////////
 
         }
@@ -205,7 +208,7 @@ public class PlantInfo extends AppCompatActivity {
         }
     }
 
-    public void generateNotification(byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
+    public void generateNotification(int plantid,byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -221,7 +224,6 @@ public class PlantInfo extends AppCompatActivity {
         intent.putExtra("keyactivitydetails", activitydetails);
         intent.putExtra("keyid", id);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //int RQS_1 = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
 
 

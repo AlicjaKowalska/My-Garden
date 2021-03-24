@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Plant;
+import com.example.mygarden.database.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -131,10 +132,14 @@ public class Edit extends AppCompatActivity {
 
 
             ///////////////////////////////notifications////////////////////////////////////////////
-            int time = 1*24*60*60*1000; // 1 dzień
-            int time1 = 1*60*1000;
-            int time2 = 2*60*1000;
-            int time3 = 3*60*1000;
+            DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+
+            databaseAccess.open();
+            int[] wfr = databaseAccess.getWFR(species.getSelectedItem().toString());
+            int water = wfr[0] *24* 60*60*1000;
+            int fertilizer = wfr[1]*24* 60*60*1000;
+            int  repot = wfr[2]*24* 60*60*1000;
+            databaseAccess.close();
 
             String n, l;
             Bitmap p;
@@ -157,18 +162,18 @@ public class Edit extends AppCompatActivity {
                     if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                         int id = PlantInfo.notifications.get(j).getNotificationID();
                         createNotificationChannel();
-                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, time1,true);
-                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, time1,true);
-                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, time1,true);
+                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
+                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
+                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
                         NotificationManagerCompat.from(this).cancel(id);
                         NotificationManagerCompat.from(this).cancel(id+1);
                         NotificationManagerCompat.from(this).cancel(id+2);
                         com.example.mygarden.Notification notif1 = new com.example.mygarden.Notification(plant.getId(),id);
                         PlantInfo.notifications.remove(notif1);
                         createNotificationChannel();
-                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, time1,false);
-                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, time1,false);
-                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, time1,false);
+                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
+                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
+                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
                     }
                     j++;
                 }

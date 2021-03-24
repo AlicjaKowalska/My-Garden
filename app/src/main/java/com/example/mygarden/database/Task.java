@@ -3,6 +3,9 @@ package com.example.mygarden.database;
 import android.graphics.Bitmap;
 
 public class Task {
+
+    private int _idTask;
+    private int plantID;
     private String activity;
     private String name;
     private String localization;
@@ -10,8 +13,9 @@ public class Task {
 
     public Task(){};
 
-    public Task(String activity, String name, String localization, Bitmap image)
+    public Task(int plantID, String activity, String name, String localization, Bitmap image)
     {
+        this.plantID = plantID;
         this.activity = activity;
         this.name = name;
         this.localization = localization;
@@ -29,4 +33,10 @@ public class Task {
 
     public Bitmap getImage() { return image; }
     public void setImage(Bitmap image) { this.image = image; }
+
+    public int getId() { return _idTask; }
+    public void setId(int idTask) { this._idTask = idTask; }
+
+    public int getPlantId() { return plantID; }
+    public void setPlantId(int plantID) { this.plantID = plantID; }
 }
