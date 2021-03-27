@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Harmonogram"
+                android:text="@string/Harmonogram"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:fontFamily="sans-serif-black"

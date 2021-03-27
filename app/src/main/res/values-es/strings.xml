@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Garden</string>
+
+    <string name="Harmonogram">Calendario</string>-->
+    <string name="Ustawienia">Ajustes</string>
+    <string name="Powiadomienia">Notificaciones</string>
+    <string name="Włącz">Encendido / apagado</string>
+    <string name="Godzina">Hora</string>
+    <string name="Dostosuj">Personalizar</string>
+    <string name="Język">Idioma</string>
+    <string name="Informacje">Información de la aplicación</string>
+    <string name="Info">Información</string>
+    <string name="Rośliny">Plantas</string>
+    <string name="Dodaj">Agregar una planta</string>
+    <string name="Nazwa">Nombre...</string>
+    <string name="Lokalizacja">Localización...</string>
+    <string name="Lokal">Localización</string>
+    <string name="Notatki">Notas...</string>
+    <string name="Notat">Notas</string>
+    <string name="Szczegóły">Detalles</string>
+    <string name="Gatunek">Escribe</string>
+    <string name="Zadania">Trabajos</string>
+    <string name="Woda">Agua</string>
+    <string name="Nawóz">Fertilizante</string>
+    <string name="Przesadzanie">Exageración</string>
+    <string name="Edytuj">Edita la planta</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.example.mygarden;
+package com.example.mygarden.database;
 
 import android.graphics.Bitmap;
 

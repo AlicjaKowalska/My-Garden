@@ -1,23 +1,21 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.database.CursorWindow;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,15 +24,13 @@ import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
+import com.example.mygarden.database.Notification;
 import com.example.mygarden.database.Plant;
-import com.example.mygarden.database.Task;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class PlantInfo extends AppCompatActivity {
 
@@ -48,11 +44,12 @@ public class PlantInfo extends AppCompatActivity {
     DBHelper DB;
     Plant plant;
 
-    public static ArrayList<com.example.mygarden.Notification> notifications = new ArrayList<>();
+    public static ArrayList<Notification> notifications = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_plant_info);
 
         localPic = (ImageView) findViewById(R.id.sun);
@@ -178,7 +175,7 @@ public class PlantInfo extends AppCompatActivity {
                             NotificationManagerCompat.from(this).cancel(id);
                             NotificationManagerCompat.from(this).cancel(id+1);
                             NotificationManagerCompat.from(this).cancel(id+2);
-                            com.example.mygarden.Notification notif = new com.example.mygarden.Notification(plant.getId(),id);
+                            Notification notif = new Notification(plant.getId(),id);
                             PlantInfo.notifications.remove(notif);
                         }
                         j++;
@@ -238,5 +235,24 @@ public class PlantInfo extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
         alarmManager.cancel(pendingIntent2);
+    }
+
+    private void setLocale(String lang) {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
+            config.setLocale(new Locale(lang.toLowerCase()));
+        } else {
+            config.locale = new Locale(lang.toLowerCase());
+        }
+        resources.updateConfiguration(config, dm);
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("My_Lang", lang).apply();
+    }
+
+    public void loadLocale() {
+        String language = PreferenceManager.getDefaultSharedPreferences(this).getString("My_Lang", "");
+        setLocale(language);
     }
 }

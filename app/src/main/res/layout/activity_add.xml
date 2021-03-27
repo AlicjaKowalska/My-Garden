@@ -52,7 +52,7 @@
                 android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:background="@null"
-                android:hint="Nazwa..."
+                android:hint="@string/Nazwa"
                 android:textCursorDrawable="@drawable/black_cursor"
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView3"
                 app:layout_constraintEnd_toEndOf="@+id/appCompatImageView3"
@@ -74,7 +74,7 @@
                 android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:background="@null"
-                android:hint="Lokalizacja..."
+                android:hint="@string/Lokalizacja"
                 android:textCursorDrawable="@drawable/black_cursor"
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView4"
                 app:layout_constraintEnd_toEndOf="@+id/appCompatImageView4"
@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:hint="Notatki..."
+                    android:hint="@string/Notatki"
                     android:textCursorDrawable="@drawable/black_cursor" />
             </ScrollView>
 

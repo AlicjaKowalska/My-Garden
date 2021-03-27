@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">My Garden</string>
 
@@ -24,5 +25,4 @@
     <string name="Nawóz">Nawóz</string>
     <string name="Przesadzanie">Przesadzanie</string>
     <string name="Edytuj">Edytuj roślinę</string>
-
- </resources>
+</resources>

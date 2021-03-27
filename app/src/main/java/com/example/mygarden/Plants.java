@@ -7,8 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,6 +27,8 @@ import android.widget.Toast;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Plant;
 
+import java.util.Locale;
+
 public class Plants extends AppCompatActivity {
 
     DBHelper DB;
@@ -31,6 +38,7 @@ public class Plants extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_plants);
         
         try{
@@ -88,5 +96,24 @@ public class Plants extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    private void setLocale(String lang) {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
+            config.setLocale(new Locale(lang.toLowerCase()));
+        } else {
+            config.locale = new Locale(lang.toLowerCase());
+        }
+        resources.updateConfiguration(config, dm);
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("My_Lang", lang).apply();
+    }
+
+    public void loadLocale() {
+        String language = PreferenceManager.getDefaultSharedPreferences(this).getString("My_Lang", "");
+        setLocale(language);
     }
 }

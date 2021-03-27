@@ -2,22 +2,23 @@ package com.example.mygarden;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,9 +30,8 @@ import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
+import com.example.mygarden.database.Notification;
 import com.example.mygarden.database.Plant;
-import com.example.mygarden.database.Task;
-import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class Add extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -56,6 +57,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_add);
 
         try {
@@ -163,11 +165,11 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
                 Plant p = plantArrayList.get(l_roślin);
 
-                com.example.mygarden.Notification notif = new com.example.mygarden.Notification(p.getId(),notificationid);
+                Notification notif = new Notification(p.getId(),notificationid);
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
-                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
+                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, 60000);
                 generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
                 generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
 
@@ -198,7 +200,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
                 Plant p = plantArrayList.get(l_roślin);
 
-                com.example.mygarden.Notification notif = new com.example.mygarden.Notification(p.getId(),notificationid);
+                Notification notif = new Notification(p.getId(),notificationid);
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
@@ -277,4 +279,23 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         // TODO Auto-generated method stub
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void setLocale(String lang) {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
+            config.setLocale(new Locale(lang.toLowerCase()));
+        } else {
+            config.locale = new Locale(lang.toLowerCase());
+        }
+        resources.updateConfiguration(config, dm);
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("My_Lang", lang).apply();
+    }
+
+    public void loadLocale() {
+        String language = PreferenceManager.getDefaultSharedPreferences(this).getString("My_Lang", "");
+        setLocale(language);
+    }
 }

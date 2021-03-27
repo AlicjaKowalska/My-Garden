@@ -6,12 +6,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,6 +34,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Locale;
 
 public class Harmonogram extends AppCompatActivity {
 
@@ -38,6 +45,7 @@ public class Harmonogram extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_harmonogram);
 
         try{
@@ -102,5 +110,24 @@ public class Harmonogram extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setLocale(String lang) {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
+            config.setLocale(new Locale(lang.toLowerCase()));
+        } else {
+            config.locale = new Locale(lang.toLowerCase());
+        }
+        resources.updateConfiguration(config, dm);
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("My_Lang", lang).apply();
+    }
+
+    public void loadLocale() {
+        String language = PreferenceManager.getDefaultSharedPreferences(this).getString("My_Lang", "");
+        setLocale(language);
     }
 }
