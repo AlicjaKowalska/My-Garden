@@ -39,16 +39,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+                app:layout_constraintTop_toBottomOf="@+id/localization_activity" />
 
             <ImageView
-                android:id="@+id/imageView10"
+                android:id="@+id/localization_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView9"
+                app:layout_constraintTop_toBottomOf="@+id/repot_activity"
                 app:srcCompat="@drawable/task_bar" />
 
             <TextView
@@ -60,18 +60,18 @@
                 android:text="@string/Lokal"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
                 app:layout_constraintStart_toEndOf="@+id/imageView12"
-                app:layout_constraintTop_toTopOf="@+id/imageView10" />
+                app:layout_constraintTop_toTopOf="@+id/localization_activity" />
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/repot_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView8"
+                app:layout_constraintTop_toBottomOf="@+id/fertilizer_activity"
                 app:srcCompat="@drawable/task_bar" />
 
             <TextView
@@ -83,18 +83,18 @@
                 android:text="@string/Przesadzanie"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
                 app:layout_constraintStart_toEndOf="@+id/imageView11"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintTop_toTopOf="@+id/repot_activity" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/fertilizer_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7"
+                app:layout_constraintTop_toBottomOf="@+id/water_activity"
                 app:srcCompat="@drawable/task_bar" />
 
             <TextView
@@ -106,12 +106,12 @@
                 android:text="@string/Nawóz"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toTopOf="@+id/imageView8" />
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/water_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -230,6 +230,7 @@
                 android:text="Informacje o roślinie"
                 android:textColor="#101010"
                 android:textSize="15sp"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -326,9 +327,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
                 app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="@+id/water_activity"
                 app:layout_constraintVertical_bias="0.518" />
 
             <TextView
@@ -337,9 +338,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
                 app:layout_constraintEnd_toStartOf="@+id/imgView1"
-                app:layout_constraintTop_toTopOf="@+id/imageView8" />
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity" />
 
             <TextView
                 android:id="@+id/repot"
@@ -347,9 +348,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
                 app:layout_constraintEnd_toStartOf="@+id/imgView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintTop_toTopOf="@+id/repot_activity" />
 
             <TextView
                 android:id="@+id/localization"
@@ -357,18 +358,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
                 app:layout_constraintEnd_toStartOf="@+id/sun"
-                app:layout_constraintTop_toTopOf="@+id/imageView10" />
+                app:layout_constraintTop_toTopOf="@+id/localization_activity" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-                app:layout_constraintEnd_toEndOf="@+id/imageView7"
-                app:layout_constraintTop_toTopOf="@+id/imageView7"
+                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                app:layout_constraintEnd_toEndOf="@+id/water_activity"
+                app:layout_constraintTop_toTopOf="@+id/water_activity"
                 app:srcCompat="@drawable/repeat" />
 
             <ImageView
@@ -376,9 +377,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                app:layout_constraintEnd_toEndOf="@+id/imageView8"
-                app:layout_constraintTop_toTopOf="@+id/imageView8"
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
+                app:layout_constraintEnd_toEndOf="@+id/fertilizer_activity"
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
                 app:srcCompat="@drawable/repeat" />
 
             <ImageView
@@ -386,9 +387,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                app:layout_constraintEnd_toEndOf="@+id/imageView9"
-                app:layout_constraintTop_toTopOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                app:layout_constraintEnd_toEndOf="@+id/repot_activity"
+                app:layout_constraintTop_toTopOf="@+id/repot_activity"
                 app:srcCompat="@drawable/repeat" />
 
             <ImageView
@@ -396,9 +397,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-                app:layout_constraintEnd_toEndOf="@+id/imageView10"
-                app:layout_constraintTop_toTopOf="@+id/imageView10"
+                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                app:layout_constraintEnd_toEndOf="@+id/localization_activity"
+                app:layout_constraintTop_toTopOf="@+id/localization_activity"
                 />
 
             <ImageView
@@ -406,9 +407,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-                app:layout_constraintStart_toStartOf="@+id/imageView7"
-                app:layout_constraintTop_toTopOf="@+id/imageView7"
+                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                app:layout_constraintStart_toStartOf="@+id/water_activity"
+                app:layout_constraintTop_toTopOf="@+id/water_activity"
                 app:srcCompat="@drawable/watercan" />
 
             <ImageView
@@ -416,9 +417,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                app:layout_constraintStart_toStartOf="@+id/imageView8"
-                app:layout_constraintTop_toTopOf="@+id/imageView8"
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
+                app:layout_constraintStart_toStartOf="@+id/fertilizer_activity"
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
                 app:srcCompat="@drawable/fertilizer" />
 
             <ImageView
@@ -426,9 +427,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                app:layout_constraintStart_toStartOf="@+id/imageView9"
-                app:layout_constraintTop_toTopOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                app:layout_constraintStart_toStartOf="@+id/repot_activity"
+                app:layout_constraintTop_toTopOf="@+id/repot_activity"
                 app:srcCompat="@drawable/repot" />
 
             <ImageView
@@ -436,9 +437,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-                app:layout_constraintStart_toStartOf="@+id/imageView10"
-                app:layout_constraintTop_toTopOf="@+id/imageView10"
+                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                app:layout_constraintStart_toStartOf="@+id/localization_activity"
+                app:layout_constraintTop_toTopOf="@+id/localization_activity"
                 app:srcCompat="@drawable/sun" />
 
             <TextView
@@ -450,9 +451,9 @@
                 android:text="@string/Woda"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView7" />
+                app:layout_constraintTop_toTopOf="@+id/water_activity" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

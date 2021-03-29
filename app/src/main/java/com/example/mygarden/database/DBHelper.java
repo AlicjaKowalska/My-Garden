@@ -69,7 +69,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 long checkIfQueryRuns=objectSqLiteDatabase.insert("my_plants",null, objectContentValues);
                 if(checkIfQueryRuns!=-1){
-                    Toast.makeText(context,"Dodano roślinę",Toast.LENGTH_SHORT).show();
                     objectSqLiteDatabase.close();
                 }
                 else{
@@ -102,7 +101,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             long checkIfQueryRuns=objectSqLiteDatabase.update("my_plants",objectContentValues,"_id=?", new String[]{String.valueOf(plant.getId())});
             if(checkIfQueryRuns!=-1){
-                Toast.makeText(context,"Edytowano roślinę",Toast.LENGTH_SHORT).show();
                 objectSqLiteDatabase.close();
             }
             else{
@@ -148,7 +146,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 return plantArrayList;
             }
             else{
-                Toast.makeText(context, "Nie ma roślin", Toast.LENGTH_SHORT).show();
                 return null;
             }
     }
@@ -174,7 +171,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             long checkIfQueryRuns=objectSqLiteDatabase.insert("my_tasks",null, objectContentValues);
             if(checkIfQueryRuns!=-1){
-                Toast.makeText(context,"Dodano zadanie",Toast.LENGTH_SHORT).show();
                 objectSqLiteDatabase.close();
             }
             else{
@@ -205,9 +201,8 @@ public class DBHelper extends SQLiteOpenHelper {
             objectContentValues.put("localization", task.getLocalization());
             objectContentValues.put("image", imageInBytes);
 
-            long checkIfQueryRuns=objectSqLiteDatabase.update("my_tasks",objectContentValues,"_id=?", new String[]{String.valueOf(task.getId())});
+            long checkIfQueryRuns=objectSqLiteDatabase.update("my_tasks",objectContentValues,"_idTask=?", new String[]{String.valueOf(task.getId())});
             if(checkIfQueryRuns!=-1){
-                Toast.makeText(context,"Edytowano zadanie",Toast.LENGTH_SHORT).show();
                 objectSqLiteDatabase.close();
             }
             else{
@@ -253,7 +248,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return taskArrayList;
         }
         else{
-            Toast.makeText(context, "Nie ma zadań", Toast.LENGTH_SHORT).show();
             return null;
         }
     }

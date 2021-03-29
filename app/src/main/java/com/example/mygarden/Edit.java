@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Notification;
 import com.example.mygarden.database.Plant;
+import com.example.mygarden.database.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -165,18 +167,18 @@ public class Edit extends AppCompatActivity {
                     if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                         int id = PlantInfo.notifications.get(j).getNotificationID();
                         createNotificationChannel();
-                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
-                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
-                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
+                        generateNotification(plant.getId(),picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
+                        generateNotification(plant.getId(),picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
+                        generateNotification(plant.getId(),picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
                         NotificationManagerCompat.from(this).cancel(id);
                         NotificationManagerCompat.from(this).cancel(id+1);
                         NotificationManagerCompat.from(this).cancel(id+2);
                         Notification notif1 = new Notification(plant.getId(),id);
                         PlantInfo.notifications.remove(notif1);
                         createNotificationChannel();
-                        generateNotification(picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
-                        generateNotification(picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
-                        generateNotification(picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
+                        generateNotification(plant.getId(),picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
+                        generateNotification(plant.getId(),picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
+                        generateNotification(plant.getId(),picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
                     }
                     j++;
                 }
@@ -232,7 +234,7 @@ public class Edit extends AppCompatActivity {
         }
     }
 
-    public void generateNotification(byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time, boolean cancel){
+    public void generateNotification(int plantid, byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time, boolean cancel){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -248,7 +250,6 @@ public class Edit extends AppCompatActivity {
         intent.putExtra("keyactivitydetails", activitydetails);
         intent.putExtra("keyid", id);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //int RQS_1 = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
 
 
@@ -259,10 +260,26 @@ public class Edit extends AppCompatActivity {
         intent2.putExtra("keyphoto", image);
         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
 
+
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
-        if(cancel==true) alarmManager.cancel(pendingIntent);
+        if(cancel==true) {
+            alarmManager.cancel(pendingIntent);
+        }
+
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
-        if(cancel==true) alarmManager.cancel(pendingIntent2);
+        if(cancel==true){
+            alarmManager.cancel(pendingIntent2);
+            ArrayList<Task> taskList = DB.getAllTasks();
+            int j=0;
+            if(taskList.size()>0) {
+                while (j < taskList.size()) {
+                    if (taskList.get(j).getPlantId()==plantid) {
+                        DB.deleteTask(String.valueOf(taskList.get(j).getId()));
+                    }
+                    j++;
+                }
+            }
+        }
     }
 
     private void setLocale(String lang) {

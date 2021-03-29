@@ -1,5 +1,6 @@
 package com.example.mygarden.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -169,5 +170,53 @@ public class DatabaseAccess {
         }
         cursor.close();
         return wfr;
+    }
+
+    public void updateWater(String species, int w){
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                ContentValues objectContentValues=new ContentValues();
+                objectContentValues.put("water", w);
+                database.update("plants",objectContentValues,"species=?", new String[]{species});
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+    }
+
+    public void updateFertilizer(String species, int f){
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                ContentValues objectContentValues=new ContentValues();
+                objectContentValues.put("fertilizer", f);
+                database.update("plants",objectContentValues,"species=?", new String[]{species});
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+    }
+
+    public void updateRepot(String species, int r){
+        String spec = new String();
+        Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            spec=cursor.getString(0);
+            if(spec.equals(species)){
+                ContentValues objectContentValues=new ContentValues();
+                objectContentValues.put("repot", r);
+                database.update("plants",objectContentValues,"species=?", new String[]{species});
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
     }
 }

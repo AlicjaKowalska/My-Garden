@@ -169,7 +169,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
-                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, 60000);
+                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
                 generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
                 generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
 
@@ -271,9 +271,6 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub

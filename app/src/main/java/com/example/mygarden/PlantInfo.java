@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,7 +19,10 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +30,9 @@ import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
 import com.example.mygarden.database.Notification;
 import com.example.mygarden.database.Plant;
+import com.example.mygarden.database.Task;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -104,15 +110,214 @@ public class PlantInfo extends AppCompatActivity {
             Drawable shadow = getDrawable(R.drawable.shadow);
             if(plant_local.equals("cień")) localPic.setImageDrawable(shadow);
             if(plant_local.equals("półcień")) localPic.setImageDrawable(penumbra);
-            if(plant_local.equals("bezpośredni")) localPic.setImageDrawable(direct);
+            if(plant_local.equals("bezpośrednie światło")) localPic.setImageDrawable(direct);
 
-            databaseAccess.close();
+            //databaseAccess.close();
         }
         catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        /////////////////////////////water dialog///////////////////////////////////////////////////
+        ImageView watering = findViewById(R.id.water_activity);
+        watering.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(PlantInfo.this);
+                dialog.setContentView(R.layout.water_dialog);
+                Button dialogButton = (Button) dialog.findViewById(R.id.water_button);
+                EditText water_number = (EditText) dialog.findViewById(R.id.water_number);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int wn = Integer.valueOf(water_number.getText().toString());
+                        databaseAccess.updateWater(plant_species, wn);
+                        int water = wn *24* 60*60*1000;
 
+                        int id2 = (int) System.currentTimeMillis();
+                        Notification notif = new Notification(plant.getId(),id2);
+                        PlantInfo.notifications.add(notif);
+                        ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                        plant.getImage().compress(Bitmap.CompressFormat.JPEG, 0 , blob);
+                        byte[] picture = blob.toByteArray();
+                        int j=0;
+                        if(PlantInfo.notifications.size()>0) {
+                            while (j < PlantInfo.notifications.size()) {
+                                if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
+                                    int id = PlantInfo.notifications.get(j).getNotificationID();
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id, water,true);
+                                    NotificationManagerCompat.from(PlantInfo.this).cancel(id);
+                                    Notification notif1 = new Notification(plant.getId(),id);
+                                    PlantInfo.notifications.remove(notif1);
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id2, water,false);
+                                    }
+                                j++;
+                            }
+                        }
+
+                        dialog.dismiss();
+                        recreate();
+                    }
+                });
+
+                ImageButton water_exit = (ImageButton) dialog.findViewById(R.id.water_exit);
+                water_exit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        ///////////////////////////////fertilizer dialog////////////////////////////////////////////
+        ImageView fertilizing = findViewById(R.id.fertilizer_activity);
+        fertilizing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(PlantInfo.this);
+                dialog.setContentView(R.layout.fertilizer_dialog);
+                Button dialogButton = (Button) dialog.findViewById(R.id.fertilizer_button);
+                EditText fertilizer_number = (EditText) dialog.findViewById(R.id.fertilizer_number);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int fn = Integer.valueOf(fertilizer_number.getText().toString());
+                        databaseAccess.updateWater(plant_species, fn);
+                        int fertilizer = fn *24* 60*60*1000;
+
+                        int id2 = (int) System.currentTimeMillis();
+                        Notification notif = new Notification(plant.getId(),id2);
+                        PlantInfo.notifications.add(notif);
+                        ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                        plant.getImage().compress(Bitmap.CompressFormat.JPEG, 0 , blob);
+                        byte[] picture = blob.toByteArray();
+                        int j=0;
+                        if(PlantInfo.notifications.size()>0) {
+                            while (j < PlantInfo.notifications.size()) {
+                                if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
+                                    int id = PlantInfo.notifications.get(j).getNotificationID();
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id, fertilizer,true);
+                                    NotificationManagerCompat.from(PlantInfo.this).cancel(id);
+                                    Notification notif1 = new Notification(plant.getId(),id);
+                                    PlantInfo.notifications.remove(notif1);
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id2, fertilizer,false);
+                                }
+                                j++;
+                            }
+                        }
+
+                        dialog.dismiss();
+                        recreate();
+                    }
+                });
+
+                ImageButton fertilizer_exit = (ImageButton) dialog.findViewById(R.id.fertilizer_exit);
+                fertilizer_exit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        ////////////////////////////repot dialog////////////////////////////////////////////////////
+        ImageView repotting = findViewById(R.id.repot_activity);
+        repotting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(PlantInfo.this);
+                dialog.setContentView(R.layout.repot_dialog);
+                Button dialogButton = (Button) dialog.findViewById(R.id.repot_button);
+                EditText repot_number = (EditText) dialog.findViewById(R.id.repot_number);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int rn = Integer.valueOf(repot_number.getText().toString());
+                        databaseAccess.updateWater(plant_species, rn);
+                        int repot = rn *24* 60*60*1000;
+
+                        int id2 = (int) System.currentTimeMillis();
+                        Notification notif = new Notification(plant.getId(),id2);
+                        PlantInfo.notifications.add(notif);
+                        ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                        plant.getImage().compress(Bitmap.CompressFormat.JPEG, 0 , blob);
+                        byte[] picture = blob.toByteArray();
+                        int j=0;
+                        if(PlantInfo.notifications.size()>0) {
+                            while (j < PlantInfo.notifications.size()) {
+                                if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
+                                    int id = PlantInfo.notifications.get(j).getNotificationID();
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id, repot,true);
+                                    NotificationManagerCompat.from(PlantInfo.this).cancel(id);
+                                    Notification notif1 = new Notification(plant.getId(),id);
+                                    PlantInfo.notifications.remove(notif1);
+                                    createNotificationChannel();
+                                    generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id2, repot,false);
+                                }
+                                j++;
+                            }
+                        }
+
+                        dialog.dismiss();
+                        recreate();
+                    }
+                });
+
+                ImageButton repot_exit = (ImageButton) dialog.findViewById(R.id.repot_exit);
+                repot_exit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        /////////////////////////localization dialog////////////////////////////////////////////////
+        ImageView local = findViewById(R.id.localization_activity);
+        local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(PlantInfo.this);
+                dialog.setContentView(R.layout.localization_dialog);
+                TextView localization_text = (TextView) dialog.findViewById(R.id.localization_text);
+                localization_text.setText(databaseAccess.getLocal(plant.getSpecies()));
+                String plant_local = databaseAccess.getLocal(plant.getSpecies());
+                ImageView localization_photo = (ImageView) dialog.findViewById(R.id.localization_photo);
+                Drawable penumbra = getDrawable(R.drawable.penumbra);
+                Drawable direct = getDrawable(R.drawable.direct);
+                Drawable shadow = getDrawable(R.drawable.shadow);
+                if(plant_local.equals("cień")) localization_photo.setImageDrawable(shadow);
+                if(plant_local.equals("półcień")) localization_photo.setImageDrawable(penumbra);
+                if(plant_local.equals("bezpośrednie światło")) localization_photo.setImageDrawable(direct);
+
+                ImageButton localization_exit = (ImageButton) dialog.findViewById(R.id.localization_exit);
+                localization_exit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+
+        /////////////////////////////////nav bar////////////////////////////////////////////////////
         Button previous_button = findViewById(R.id.previous_r);
         previous_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,9 +374,9 @@ public class PlantInfo extends AppCompatActivity {
                         if (notifications.get(j).getPlantID()==plantid) {
                             int id = notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, water);
-                            generateNotification(plant.getId(),null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, fertilizer);
-                            generateNotification(plant.getId(),null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, repot);
+                            generateNotification(plant.getId(),null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, water,true);
+                            generateNotification(plant.getId(),null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, fertilizer, true);
+                            generateNotification(plant.getId(),null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, repot, true);
                             NotificationManagerCompat.from(this).cancel(id);
                             NotificationManagerCompat.from(this).cancel(id+1);
                             NotificationManagerCompat.from(this).cancel(id+2);
@@ -205,7 +410,7 @@ public class PlantInfo extends AppCompatActivity {
         }
     }
 
-    public void generateNotification(int plantid,byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time){
+    public void generateNotification(int plantid, byte[] image,int notificationicon, String name, String localization, String activity, String activitydetails, int id, int time, boolean cancel){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -231,10 +436,26 @@ public class PlantInfo extends AppCompatActivity {
         intent2.putExtra("keyphoto", image);
         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
 
+
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
-        alarmManager.cancel(pendingIntent);
+        if(cancel==true) {
+            alarmManager.cancel(pendingIntent);
+        }
+
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
-        alarmManager.cancel(pendingIntent2);
+        if(cancel==true){
+            alarmManager.cancel(pendingIntent2);
+            ArrayList<Task> taskList = DB.getAllTasks();
+            int j=0;
+            if(taskList.size()>0) {
+                while (j < taskList.size()) {
+                    if (taskList.get(j).getPlantId()==plantid) {
+                        DB.deleteTask(String.valueOf(taskList.get(j).getId()));
+                    }
+                    j++;
+                }
+            }
+        }
     }
 
     private void setLocale(String lang) {

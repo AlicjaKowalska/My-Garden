@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
@@ -41,6 +42,8 @@ public class Harmonogram extends AppCompatActivity {
     DBHelper DB;
     RecyclerView objectRecyclerView;
     RVAdapter_h objectRvAdapter;
+
+    TextView notasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,8 @@ public class Harmonogram extends AppCompatActivity {
                 objectRecyclerView.setAdapter(objectRvAdapter);
             }
             else{
-                Toast.makeText(this, "Brak zadań na dziś", Toast.LENGTH_SHORT).show();
+                notasks = (TextView) findViewById(R.id.notasks);
+                notasks.setText("Brak zadań na dziś");
             }
         }
         catch (Exception e){
