@@ -26,4 +26,10 @@
     <string name="Przesadzanie">Repot</string>
     <string name="Edytuj">Edit plant</string>
     <string name="Wybierz">Choose language</string>
+    <string name="Kontakt">Contact</string>
+    <string name="brak">Have not found your plant species? Contact us: </string>
+    <string name="miejsce">Place the plant in a place where it is: </string>
+    <string name="powtarzaj">Repeat every:</string>
+    <string name="dni">days</string>
+    <string name="Zastosuj">Apply</string>
 </resources>

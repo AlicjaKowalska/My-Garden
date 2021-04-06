@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
@@ -42,6 +43,19 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        TextView email = (TextView) findViewById(R.id.email);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"my.garden.app.help@gmail.com"});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Lacking species");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Species: ");
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             }
         });
 

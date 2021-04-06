@@ -26,4 +26,10 @@
     <string name="Przesadzanie">Übertreibung</string>
     <string name="Edytuj">Bearbeiten die Pflanze </string>
     <string name="Wybierz">Sprache wählen</string>
+    <string name="Kontakt">Kontakt</string>
+    <string name="brak">Haben Sie Ihre Pflanzenart nicht gefunden? Kontaktiere uns: </string>
+    <string name="miejsce">Platzieren Sie die Pflanze dort, wo sie ist: </string>
+    <string name="powtarzaj">Wiederhole jeden:</string>
+    <string name="dni">Tage</string>
+    <string name="Zastosuj">Anwenden</string>
 </resources>

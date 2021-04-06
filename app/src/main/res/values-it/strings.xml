@@ -26,4 +26,10 @@
     <string name="Przesadzanie">Esagerazione</string>
     <string name="Edytuj">Modifica la pianta</string>
     <string name="Wybierz">Scegli la lingua </string>
+    <string name="Kontakt">Contatto</string>
+    <string name="brak">Non hai trovato la tua specie di piante? Contattaci:</string>
+    <string name="miejsce">Posiziona la pianta dove si trova:</string>
+    <string name="powtarzaj">Ripeti ogni:</string>
+    <string name="dni">giorni</string>
+    <string name="Zastosuj">Applicare</string>
 </resources>

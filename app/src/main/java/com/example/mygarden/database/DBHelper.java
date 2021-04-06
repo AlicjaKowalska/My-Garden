@@ -9,10 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
-import com.example.mygarden.Add;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
