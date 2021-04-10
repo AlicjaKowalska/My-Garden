@@ -42,7 +42,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"></com.google.android.material.button.MaterialButton>
+                app:layout_constraintVertical_bias="0.0"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_add"
@@ -58,7 +58,7 @@
                 app:layout_constraintHorizontal_bias="0.463"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.486"></androidx.appcompat.widget.AppCompatTextView>
+                app:layout_constraintVertical_bias="0.486"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/check_add"
@@ -76,7 +76,7 @@
                 app:layout_constraintStart_toEndOf="@+id/text_add"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                android:onClick="storeData"></com.google.android.material.button.MaterialButton>
+                android:onClick="storeData"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

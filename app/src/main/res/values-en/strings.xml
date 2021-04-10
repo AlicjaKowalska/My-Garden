@@ -32,4 +32,5 @@
     <string name="powtarzaj">Repeat every:</string>
     <string name="dni">days</string>
     <string name="Zastosuj">Apply</string>
+    <string name="inform">An application created as part of an engineering thesis. Author: Alicja Kowalska </string>
 </resources>

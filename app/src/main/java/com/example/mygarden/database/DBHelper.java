@@ -1,5 +1,6 @@
 package com.example.mygarden.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,10 +17,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     Context context;
 
-    private static String DATABASE_NAME="MyPlantsDB.db";//nazwa bazy danych
-    private static int DATABASE_VERSION=1;
-    private static String createTableQuery = "create table my_plants(_id integer primary key autoincrement," + "name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
-    private static String createTableQuery2 = "create table my_tasks(_idTask integer primary key autoincrement," +"plantID integer"+ ",activity TEXT" + ",name TEXT" + ",localization TEXT" + ", image BLOB)";
+    private static final String DATABASE_NAME="MyPlantsDB.db";//nazwa bazy danych
+    private static final int DATABASE_VERSION=1;
+    private static final String createTableQuery = "create table my_plants(_id integer primary key autoincrement," + "name TEXT" + ",localization TEXT" + ",species TEXT" + ",notes TEXT" + ", image BLOB)";
+    private static final String createTableQuery2 = "create table my_tasks(_idTask integer primary key autoincrement," +"plantID integer"+ ",activity TEXT" + ",name TEXT" + ",localization TEXT" + ", image BLOB)";
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imageInBytes;
@@ -111,10 +112,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteData(String id)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();
-        /*Cursor cursor = MyDB.rawQuery("Select * from my_plants where _id=?", new String[]{String.valueOf(plant.getId())});
-        if (cursor.getCount()>0) {
-            long result = MyDB.delete("my_plants", "_id=?", new String[]{String.valueOf(plant.getId())});
-        }*/
         MyDB.delete("my_plants", "_id=?", new String[] { id });
         MyDB.close();
     }
@@ -123,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
             ArrayList<Plant> plantArrayList=new ArrayList<>();
 
-            Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_plants", null);
+            @SuppressLint("Recycle") Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_plants", null);
             if(objectCursor.getCount()!= -1){
                 while(objectCursor.moveToNext()){
                     Plant plant = new Plant();
@@ -144,6 +141,28 @@ public class DBHelper extends SQLiteOpenHelper {
             else{
                 return null;
             }
+    }
+
+    public Plant getPlant(int id){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        Plant plant = new Plant();
+        @SuppressLint("Recycle") Cursor objectCursor = DB.rawQuery("select * from my_plants where _id = ?", new String[]{String.valueOf(id)});
+        if(objectCursor.getCount()!=-1){
+            while (objectCursor.moveToNext()){
+                plant.setId(Integer.parseInt(objectCursor.getString(0)));
+                plant.setName(objectCursor.getString(1));
+                plant.setLocalization(objectCursor.getString(2));
+                plant.setSpecies(objectCursor.getString(3));
+                plant.setNotes(objectCursor.getString(4));
+                byte [] imageBytes = objectCursor.getBlob(5);
+                Bitmap objectBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
+                plant.setImage(objectBitmap);
+            }
+            return plant;
+        }
+        else{
+            return null;
+        }
     }
 
     ///////////////////////////////////////////tasks////////////////////////////////////////////////
@@ -213,10 +232,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteTask(String id)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();
-        /*Cursor cursor = MyDB.rawQuery("Select * from my_plants where _id=?", new String[]{String.valueOf(plant.getId())});
-        if (cursor.getCount()>0) {
-            long result = MyDB.delete("my_plants", "_id=?", new String[]{String.valueOf(plant.getId())});
-        }*/
         MyDB.delete("my_tasks", "_idTask=?", new String[] { id });
         MyDB.close();
     }
@@ -225,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase objectSqLiteDatabase=this.getReadableDatabase();
         ArrayList<Task> taskArrayList=new ArrayList<>();
 
-        Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_tasks", null);
+        @SuppressLint("Recycle") Cursor objectCursor=objectSqLiteDatabase.rawQuery("select * from my_tasks", null);
         if(objectCursor.getCount()!= -1){
             while(objectCursor.moveToNext()){
                 Task task = new Task();

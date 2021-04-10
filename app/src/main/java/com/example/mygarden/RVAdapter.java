@@ -1,27 +1,20 @@
 package com.example.mygarden;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Plant;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolderClass>{
@@ -50,19 +43,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolderClass>
         rvViewHolderClass.notesTV.setText(plant.getNotes());
         rvViewHolderClass.objectImageView.setImageBitmap(plant.getImage());
 
-        rvViewHolderClass.relative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView name = (TextView) v.findViewById(android.R.id.text1);
+        rvViewHolderClass.relative.setOnClickListener((View.OnClickListener) v -> {
+            TextView name = (TextView) v.findViewById(android.R.id.text1);
 
-                Intent intent = new Intent(context, PlantInfo.class);
-                intent.putExtra("keyname", plant.getName());
-                intent.putExtra("keylocalization", plant.getLocalization());
-                intent.putExtra("keyspecies", plant.getSpecies());
-                intent.putExtra("keynotes", plant.getNotes());
-                intent.putExtra("keyid", i);
-                context.startActivity(intent);
-            }
+            Intent intent = new Intent(context, PlantInfo.class);
+            intent.putExtra("keyid", plant.getId());
+            context.startActivity(intent);
+            ((Activity) context).finish();
+            ((Activity) context).overridePendingTransition(0,0 );
         });
     }
 

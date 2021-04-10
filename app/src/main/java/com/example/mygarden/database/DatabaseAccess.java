@@ -5,35 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseAccess {
-    private SQLiteOpenHelper openHelper;
+    private final SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
 
-    Context context;
-
-    /**
-     * Private constructor to aboid object creation from outside classes.
-     *
-     * @param context
-     */
     private DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
-    /**
-     * Return a singleton instance of DatabaseAccess.
-     *
-     * @param context the Context
-     * @return the instance of DabaseAccess
-     */
     public static DatabaseAccess getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseAccess(context);
@@ -41,27 +25,16 @@ public class DatabaseAccess {
         return instance;
     }
 
-    /**
-     * Open the database connection.
-     */
     public void open() {
         this.database = openHelper.getWritableDatabase();
     }
 
-    /**
-     * Close the database connection.
-     */
     public void close() {
         if (database != null) {
             this.database.close();
         }
     }
 
-    /**
-     * Read all quotes from the database.
-     *
-     * @return a List of quotes
-     */
     public List<String> getSpecies() {
         List<String> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT species FROM plants", null);
@@ -75,8 +48,8 @@ public class DatabaseAccess {
     }
 
     public String getInfo(String species) {
-        String info = new String();
-        String spec = new String();
+        String info = "";
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -91,8 +64,8 @@ public class DatabaseAccess {
     }
 
     public String getWater(String species) {
-        String water = new String();
-        String spec = new String();
+        String water = "";
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -107,8 +80,8 @@ public class DatabaseAccess {
     }
 
     public String getFertilizer(String species) {
-        String fertilizer = new String();
-        String spec = new String();
+        String fertilizer = "";
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -123,8 +96,8 @@ public class DatabaseAccess {
     }
 
     public String getRepot(String species) {
-        String repot = new String();
-        String spec = new String();
+        String repot = "";
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -139,8 +112,8 @@ public class DatabaseAccess {
     }
 
     public String getLocal(String species) {
-        String local = new String();
-        String spec = new String();
+        String local = "";
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -156,7 +129,7 @@ public class DatabaseAccess {
 
     public int[] getWFR(String species) {
         int[] wfr = new int[3];
-        String spec = new String();
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -173,7 +146,7 @@ public class DatabaseAccess {
     }
 
     public void updateWater(String species, int w){
-        String spec = new String();
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -189,7 +162,7 @@ public class DatabaseAccess {
     }
 
     public void updateFertilizer(String species, int f){
-        String spec = new String();
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -205,7 +178,7 @@ public class DatabaseAccess {
     }
 
     public void updateRepot(String species, int r){
-        String spec = new String();
+        String spec;
         Cursor cursor = database.rawQuery("SELECT * FROM plants", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -219,4 +192,5 @@ public class DatabaseAccess {
         }
         cursor.close();
     }
+
 }

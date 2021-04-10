@@ -2,8 +2,6 @@ package com.example.mygarden.database;
 
 import android.graphics.Bitmap;
 
-import java.io.Serializable;
-
 public class Plant{
 
     private int _id;
@@ -13,7 +11,7 @@ public class Plant{
     private String notes;
     private Bitmap image;
 
-    public Plant(){};
+    public Plant(){}
 
     public Plant(String name, String localization, String species, String notes, Bitmap image)
     {

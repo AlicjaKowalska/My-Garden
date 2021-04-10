@@ -11,7 +11,7 @@ public class Task {
     private String localization;
     private Bitmap image;
 
-    public Task(){};
+    public Task(){}
 
     public Task(int plantID, String activity, String name, String localization, Bitmap image)
     {

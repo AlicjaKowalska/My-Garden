@@ -14,12 +14,9 @@ public class LoadingScreen extends AppCompatActivity {
         setContentView(R.layout.activity_loading_screen);
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run(){
-                startActivity(new Intent(LoadingScreen.this, Harmonogram.class));
-                finish();
-            }
+        handler.postDelayed(() -> {
+            startActivity(new Intent(LoadingScreen.this, Harmonogram.class));
+            overridePendingTransition(0,0 );
         },1500);
     }
 }

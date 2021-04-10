@@ -1,31 +1,20 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
-import com.example.mygarden.database.Plant;
 
 import java.util.Locale;
 
@@ -62,39 +51,31 @@ public class Plants extends AppCompatActivity {
 
         ///////////////////////////////////menu///////////////////////////////////
         Button settings_button = findViewById(R.id.settings_plants);
-        settings_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Plants.this, Settings.class);
-                startActivity(i);
-            }
+        settings_button.setOnClickListener(v -> {
+            Intent i = new Intent(Plants.this, Settings.class);
+            startActivity(i);
+            overridePendingTransition(0,0 );
         });
 
         Button harmonogram_button = findViewById(R.id.harmonogram);
-        harmonogram_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Plants.this, Harmonogram.class);
-                startActivity(i);
-            }
+        harmonogram_button.setOnClickListener(v -> {
+            Intent i = new Intent(Plants.this, Harmonogram.class);
+            startActivity(i);
+            overridePendingTransition(0,0 );
         });
 
         Button add_button = findViewById(R.id.add);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Plants.this, Add.class);
-                startActivity(i);
-            }
+        add_button.setOnClickListener(v -> {
+            Intent i = new Intent(Plants.this, Add.class);
+            startActivity(i);
+            overridePendingTransition(0,0 );
         });
 
         Button plants_button = findViewById(R.id.plants);
-        plants_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Plants.this, Plants.class);
-                startActivity(i);
-            }
+        plants_button.setOnClickListener(v -> {
+            Intent i = new Intent(Plants.this, Plants.class);
+            startActivity(i);
+            overridePendingTransition(0,0 );
         });
     }
 

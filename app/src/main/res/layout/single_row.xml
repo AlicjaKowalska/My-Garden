@@ -39,14 +39,14 @@
     </TextView>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="110dp"
         android:text="image details"
         android:textSize="20sp"
+        android:id="@+id/sr_notes"
         android:paddingLeft="10dp"
         android:layout_below="@id/sr_species"
-        android:layout_toRightOf="@id/sr_imageIV"
-        android:id="@+id/sr_notes">
+        android:layout_toRightOf="@id/sr_imageIV">
     </TextView>
 
     <ImageView
@@ -56,7 +56,7 @@
         android:id="@+id/sr_imageIV"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/plant_photo"></ImageView>
+        android:src="@drawable/plant_photo" />
 
     <View
         android:id="@+id/divider9"

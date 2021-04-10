@@ -13,7 +13,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.CursorWindow;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -79,7 +78,7 @@ public class Edit extends AppCompatActivity {
         List<String> plant_species = databaseAccess.getSpecies();
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, plant_species);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner, plant_species);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         this.species.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////////////
@@ -91,13 +90,12 @@ public class Edit extends AppCompatActivity {
         edit_id = getIntent().getIntExtra("editid", 0);
         DatabaseAccess dbAccess=DatabaseAccess.getInstance(getApplicationContext());
         DB = new DBHelper(this);
-        ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
-        plant = plantArrayList.get(edit_id);
+        plant = DB.getPlant(edit_id);
 
-        edit_name = getIntent().getStringExtra("editname");
-        edit_localization = getIntent().getStringExtra("editlocalization");
-        edit_species = getIntent().getStringExtra("editspecies");
-        edit_notes = getIntent().getStringExtra("editnotes");
+        edit_name = plant.getName();
+        edit_localization = plant.getLocalization();
+        edit_species = plant.getSpecies();
+        edit_notes = plant.getNotes();
         edit_photo = plant.getImage();
 
         name.setText(edit_name);
@@ -108,12 +106,7 @@ public class Edit extends AppCompatActivity {
 
         databaseAccess.close();
         Button previous_button = findViewById(R.id.previous_edit);
-        previous_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        previous_button.setOnClickListener(v -> onBackPressed());
     }
 
     ///////////////////////////////////////update data//////////////////////////////////////////////
@@ -122,8 +115,7 @@ public class Edit extends AppCompatActivity {
             edit_id = getIntent().getIntExtra("editid", 0);
             DatabaseAccess dbAccess=DatabaseAccess.getInstance(getApplicationContext());
             DB = new DBHelper(this);
-            ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
-            plant = plantArrayList.get(edit_id);
+            plant = DB.getPlant(edit_id);
 
             if(name.getText().toString().equals(plant.getName())) plant.setName(plant.getName()); else plant.setName(name.getText().toString());
             if(localization.getText().toString().equals(plant.getLocalization())) plant.setLocalization(plant.getLocalization()); else plant.setLocalization(localization.getText().toString());
@@ -132,8 +124,10 @@ public class Edit extends AppCompatActivity {
             if(imageToStore==null) plant.setImage(plant.getImage()); else plant.setImage(imageToStore);
 
             DB.updateData(plant);
-            Intent i = new Intent(Edit.this, Plants.class);
+            Intent i = new Intent(Edit.this, PlantInfo.class);
+            i.putExtra("keyid", edit_id);
             startActivity(i);
+            overridePendingTransition(0,0 );
 
 
             ///////////////////////////////notifications////////////////////////////////////////////
@@ -225,7 +219,7 @@ public class Edit extends AppCompatActivity {
             CharSequence name = "Channel";
             String description = "Channel for notification";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = null;
+            NotificationChannel channel;
             channel = new NotificationChannel("notificationID", name, importance);
             channel.setDescription(description);
 
@@ -239,9 +233,8 @@ public class Edit extends AppCompatActivity {
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 00);
-        calendar.set(Calendar.SECOND,00);
-        long timeInMillis = time;//86400000=1 dzień
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND,0);
 
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("keynotificationicon", notificationicon);
@@ -261,12 +254,12 @@ public class Edit extends AppCompatActivity {
         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
 
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent); //AlarmManager.INTERVAL_DAY
         if(cancel==true) {
             alarmManager.cancel(pendingIntent);
         }
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent2);
         if(cancel==true){
             alarmManager.cancel(pendingIntent2);
             ArrayList<Task> taskList = DB.getAllTasks();

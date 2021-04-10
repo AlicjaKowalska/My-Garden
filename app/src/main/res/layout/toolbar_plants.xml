@@ -40,7 +40,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.486"></androidx.appcompat.widget.AppCompatTextView>
+                app:layout_constraintVertical_bias="0.486"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settings_plants"
@@ -57,7 +57,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.444"></com.google.android.material.button.MaterialButton>
+                app:layout_constraintVertical_bias="0.444"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -23,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imagesRV"
-            android:layout_marginTop="2dp"
-            ></androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginTop="2dp" />
     </ScrollView>
     <include
         android:id="@+id/menubar"

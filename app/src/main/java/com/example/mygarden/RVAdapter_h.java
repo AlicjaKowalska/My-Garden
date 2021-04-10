@@ -1,32 +1,24 @@
 package com.example.mygarden;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mygarden.database.DBHelper;
-import com.example.mygarden.database.DatabaseAccess;
-import com.example.mygarden.database.Plant;
 import com.example.mygarden.database.Task;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderClassH>{
     ArrayList<Task> taskList;
@@ -53,12 +45,23 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
         rvViewHolderClass.localization.setText(task.getLocalization());
         rvViewHolderClass.image.setImageBitmap(task.getImage());
 
-        rvViewHolderClass.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                DBHelper DB = new DBHelper(context);
-                DB.deleteTask(String.valueOf(task.getId()));
-            }
+        rvViewHolderClass.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setMessage("Wykonać zadanie?");
+            alertDialogBuilder.setPositiveButton("TAK",
+                    (arg0, arg1) -> {
+            DBHelper DB = new DBHelper(context);
+            DB.deleteTask(String.valueOf(task.getId()));
+            Intent intent = new Intent(context, Harmonogram.class);
+            context.startActivity(intent);
+            ((Activity) context).finish();
+            ((Activity) context).overridePendingTransition(0, 0);
+                    });
+            alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> {
+
+            }));
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         });
     }
 

@@ -16,6 +16,18 @@
             android:layout_height="wrap_content">
 
             <View
+                android:id="@+id/divider15"
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="14dp"
+                android:background="?android:attr/listDivider"
+                android:elevation="1dp"
+                app:layout_constraintTop_toBottomOf="@+id/info"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <View
                 android:id="@+id/divider4"
                 android:layout_width="375dp"
                 android:layout_height="1dp"
@@ -146,20 +158,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
+            <ScrollView
+                android:id="@+id/notesSV"
+                android:layout_width="200dp"
+                android:layout_height="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/plantinfo_localization"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp">
             <TextView
                 android:id="@+id/plantinfo_notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
                 android:fontFamily="sans-serif"
                 android:text="notatka"
+                android:textAlignment="textEnd"
+                android:layout_gravity="end"
                 android:textColor="#80000000"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/plantinfo_localization" />
+                android:textSize="18sp"/>
+            </ScrollView>
 
             <TextView
                 android:id="@+id/plantinfo_localization"
@@ -226,6 +245,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_goneMarginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Informacje o roślinie"
                 android:textColor="#101010"
@@ -354,10 +375,11 @@
 
             <TextView
                 android:id="@+id/localization"
-                android:layout_width="wrap_content"
+                android:layout_width="85dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="5dp"
                 android:text=""
+                android:textAlignment="viewEnd"
                 app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
                 app:layout_constraintEnd_toStartOf="@+id/sun"
                 app:layout_constraintTop_toTopOf="@+id/localization_activity" />

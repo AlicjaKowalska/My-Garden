@@ -17,7 +17,7 @@
         android:src="@drawable/plant_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/sr_h_imageDetailsTV"
@@ -31,7 +31,7 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/sr_h_imageIV"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/sr_h_name"
@@ -43,7 +43,7 @@
         android:text="activity details"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/sr_h_imageIV"
-        app:layout_constraintTop_toBottomOf="@+id/sr_h_imageDetailsTV"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/sr_h_imageDetailsTV"/>
 
     <TextView
         android:id="@+id/sr_h_localization"
@@ -55,7 +55,7 @@
         android:text="activity details"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/sr_h_imageIV"
-        app:layout_constraintTop_toBottomOf="@+id/sr_h_name"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/sr_h_name"/>
 
     <View
         android:id="@+id/divider9"

@@ -53,7 +53,6 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     private static final int PICK_IMAGE_REQUEST=100;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,19 +85,14 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         List<String> plant_species = databaseAccess.getSpecies();
         databaseAccess.close();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, plant_species);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner, plant_species);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         this.spinner.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////button - previous////////////////////////////////////////
         Button previous_button = findViewById(R.id.previous_add);
-        previous_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        previous_button.setOnClickListener(v -> onBackPressed());
         ////////////////////////////////////////////////////////////////////////////////////////////
 
     }
@@ -144,6 +138,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
+                overridePendingTransition(0,0 );
 
                 /////////////////////////////////////notifications//////////////////////////////////////
                 DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
@@ -161,9 +156,9 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 
                 int notificationid = (int) System.currentTimeMillis();
 
-                int l_roślin = DB.getAllPlantsData().size()-1;
+                int l_roslin = DB.getAllPlantsData().size()-1;
                 ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
-                Plant p = plantArrayList.get(l_roślin);
+                Plant p = plantArrayList.get(l_roslin);
 
                 Notification notif = new Notification(p.getId(),notificationid);
                 PlantInfo.notifications.add(notif);
@@ -179,6 +174,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 DB.storeData(plant);
                 Intent i = new Intent(Add.this, Plants.class);
                 startActivity(i);
+                overridePendingTransition(0,0 );
 
                 /////////////////////////////////////notifications//////////////////////////////////////
                 DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
@@ -196,9 +192,9 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
 
                 int notificationid = (int) System.currentTimeMillis();
 
-                int l_roślin = DB.getAllPlantsData().size()-1;
+                int l_roslin = DB.getAllPlantsData().size()-1;
                 ArrayList<Plant> plantArrayList = DB.getAllPlantsData();
-                Plant p = plantArrayList.get(l_roślin);
+                Plant p = plantArrayList.get(l_roslin);
 
                 Notification notif = new Notification(p.getId(),notificationid);
                 PlantInfo.notifications.add(notif);
@@ -222,7 +218,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
             CharSequence name = "Channel";
             String description = "Channel for notification";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = null;
+            NotificationChannel channel;
             channel = new NotificationChannel("notificationID", name, importance);
             channel.setDescription(description);
 
@@ -236,9 +232,8 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
 
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 00);
-        calendar.set(Calendar.SECOND,00);
-        long timeInMillis = time;//86400000=1 dzień
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("keynotificationicon", notificationicon);
@@ -258,8 +253,8 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         intent2.putExtra("keyphoto", image);
         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent); //AlarmManager.INTERVAL_DAY
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), timeInMillis, pendingIntent2);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent); //AlarmManager.INTERVAL_DAY
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent2);
     }
 
 
