@@ -246,12 +246,12 @@ public class PlantInfo extends AppCompatActivity {
                         if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                             int id = PlantInfo.notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id, repot,true);
+                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id, repot,true);
                             NotificationManagerCompat.from(PlantInfo.this).cancel(id);
                             Notification notif1 = new Notification(plant.getId(),id);
                             PlantInfo.notifications.remove(notif1);
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id2, repot,false);
+                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id2, repot,false);
                         }
                         j++;
                     }

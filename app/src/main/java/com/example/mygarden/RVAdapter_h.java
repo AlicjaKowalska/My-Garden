@@ -46,22 +46,24 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
         rvViewHolderClass.image.setImageBitmap(task.getImage());
 
         rvViewHolderClass.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-            alertDialogBuilder.setMessage("Wykonać zadanie?");
-            alertDialogBuilder.setPositiveButton("TAK",
-                    (arg0, arg1) -> {
-            DBHelper DB = new DBHelper(context);
-            DB.deleteTask(String.valueOf(task.getId()));
-            Intent intent = new Intent(context, Harmonogram.class);
-            context.startActivity(intent);
-            ((Activity) context).finish();
-            ((Activity) context).overridePendingTransition(0, 0);
-                    });
-            alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> {
-
-            }));
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            if(rvViewHolderClass.checkbox.isChecked()) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage("Wykonać zadanie?");
+                alertDialogBuilder.setPositiveButton("TAK",
+                        (arg0, arg1) -> {
+                            DBHelper DB = new DBHelper(context);
+                            DB.deleteTask(String.valueOf(task.getId()));
+                            Intent intent = new Intent(context, Harmonogram.class);
+                            context.startActivity(intent);
+                            ((Activity) context).finish();
+                            ((Activity) context).overridePendingTransition(0, 0);
+                        });
+                alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> {
+                    rvViewHolderClass.checkbox.toggle();
+                }));
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
         });
     }
 
