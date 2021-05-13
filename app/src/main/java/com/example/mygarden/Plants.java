@@ -1,7 +1,6 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -11,11 +10,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.GridView;
 
+import com.example.mygarden.adapters.GVAdapter;
+import com.example.mygarden.adapters.RVAdapter;
 import com.example.mygarden.database.DBHelper;
+import com.example.mygarden.database.Plant;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Plants extends AppCompatActivity {
@@ -23,14 +28,33 @@ public class Plants extends AppCompatActivity {
     DBHelper DB;
     RecyclerView objectRecyclerView;
     RVAdapter objectRvAdapter;
+    GridView gridview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_plants);
+
+        DB = new DBHelper(this);
+        ArrayList<Plant> plantList = DB.getAllPlantsData();
+
+        gridview = findViewById(R.id.gv);
+        GVAdapter gvAdapter = new GVAdapter(plantList,this);
+        gridview.setAdapter(gvAdapter);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Plant plant = plantList.get(position);
+                Intent intent = new Intent(Plants.this, PlantInfo.class);
+                intent.putExtra("keyid", plant.getId());
+                startActivity(intent);
+                overridePendingTransition(0,0 );
+            }
+        });
         
-        try{
+        /*try{
             objectRecyclerView=findViewById(R.id.imagesRV);
             DB = new DBHelper(this);
         }
@@ -47,7 +71,7 @@ public class Plants extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         ///////////////////////////////////menu///////////////////////////////////
         Button settings_button = findViewById(R.id.settings_plants);

@@ -48,7 +48,7 @@
                 android:layout_width="56dp"
                 android:layout_height="69dp"
                 android:clickable="true"
-                android:drawableEnd="@drawable/settings"
+                android:drawableEnd="@drawable/ic_settings"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 app:backgroundTint="#FFFFFF"

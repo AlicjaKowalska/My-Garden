@@ -161,18 +161,18 @@ public class Edit extends AppCompatActivity {
                     if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                         int id = PlantInfo.notifications.get(j).getNotificationID();
                         createNotificationChannel();
-                        generateNotification(plant.getId(),picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
-                        generateNotification(plant.getId(),picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
-                        generateNotification(plant.getId(),picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
                         NotificationManagerCompat.from(this).cancel(id);
                         NotificationManagerCompat.from(this).cancel(id+1);
                         NotificationManagerCompat.from(this).cancel(id+2);
                         Notification notif1 = new Notification(plant.getId(),id);
                         PlantInfo.notifications.remove(notif1);
                         createNotificationChannel();
-                        generateNotification(plant.getId(),picture,R.drawable.watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
-                        generateNotification(plant.getId(),picture,R.drawable.fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
-                        generateNotification(plant.getId(),picture,R.drawable.repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
+                        generateNotification(plant.getId(),picture,R.drawable.ic_repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
                     }
                     j++;
                 }

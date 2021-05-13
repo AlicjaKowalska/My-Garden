@@ -1,4 +1,4 @@
-package com.example.mygarden;
+package com.example.mygarden.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mygarden.PlantInfo;
+import com.example.mygarden.R;
 import com.example.mygarden.database.Plant;
 
 import java.util.ArrayList;

@@ -27,7 +27,7 @@
     <string name="Wybierz">Wybierz język</string>
     <string name="Kontakt">Kontakt</string>
     <string name="brak">Nie znalazłeś gatunku swojej rośliny? Skontaktuj się z nami:</string>
-    <string name="miejsce">Umieść roślinę w miejscu, w którym jest:</string>
+    <string name="miejsce">Użyj czujnika światła swojego urządzenia, aby określić poziom światła w lokalizacji rośliny.</string>
     <string name="powtarzaj">Powtarzaj co:</string>
     <string name="dni">dni</string>
     <string name="Zastosuj">Zastosuj</string>

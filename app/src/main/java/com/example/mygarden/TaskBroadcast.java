@@ -7,21 +7,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.mygarden.database.DBHelper;
+import com.example.mygarden.database.Plant;
 import com.example.mygarden.database.Task;
 
 public class TaskBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int plantid = intent.getIntExtra("keyplantid",0);
-        String name = intent.getStringExtra("keyname");
-        String activity = intent.getStringExtra("keyactivity");
-        String localization = intent.getStringExtra("keylocalization");
-        byte[] photo = intent.getByteArrayExtra("keyphoto");
 
-        Bitmap plant_img = BitmapFactory.decodeByteArray(photo, 0 , photo.length);
-
-        Task task = new Task(plantid, activity, name, localization, plant_img);
         DBHelper DB = new DBHelper(context);
+        Plant plant = DB.getPlant(plantid);
+
+        String name = plant.getName();
+        String activity = intent.getStringExtra("keyactivity");
+        String localization = plant.getLocalization();
+        Bitmap img = plant.getImage();
+
+        Task task = new Task(plantid, activity, name, localization, img);
         DB.addTask(task);
     }
 }

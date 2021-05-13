@@ -13,4 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="colored_checkkbox" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">#8BB17D</item>
+        <item name="android:textColorSecondary">#8BB17D</item>
+    </style>
 </resources>

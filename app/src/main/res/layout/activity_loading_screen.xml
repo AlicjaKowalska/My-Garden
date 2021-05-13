@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="false"
-    android:background="@drawable/background"
+    android:background="@color/teal_700"
     android:rotationX="0"
     tools:context=".LoadingScreen">
 

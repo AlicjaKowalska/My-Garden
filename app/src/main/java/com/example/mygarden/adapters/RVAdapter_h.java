@@ -1,4 +1,4 @@
-package com.example.mygarden;
+package com.example.mygarden.adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mygarden.Harmonogram;
+import com.example.mygarden.R;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Task;
 
@@ -55,7 +57,6 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
                             DB.deleteTask(String.valueOf(task.getId()));
                             Intent intent = new Intent(context, Harmonogram.class);
                             context.startActivity(intent);
-                            ((Activity) context).finish();
                             ((Activity) context).overridePendingTransition(0, 0);
                         });
                 alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> {

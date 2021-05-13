@@ -41,7 +41,7 @@
     <include
         android:id="@+id/menubar"
         layout="@layout/menubar"
-        android:layout_width="405dp"
+        android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

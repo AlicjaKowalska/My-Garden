@@ -1,6 +1,7 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
@@ -10,11 +11,16 @@ import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -43,17 +50,26 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class PlantInfo extends AppCompatActivity {
 
-    private static final String CHANNEL_ID = "notification_id";
+public class PlantInfo extends AppCompatActivity implements SensorEventListener {
+
     TextView name, localization, species, notes;
     TextView info, water, fertilizer, repot, local;
     String plant_name, plant_localization, plant_species, plant_notes;
     ImageView photo, localPic;
     int id;
 
+    DatabaseAccess databaseAccess;
     DBHelper DB;
     Plant plant;
+
+    SensorManager sensorManager;
+    Sensor sensor;
+    Dialog dialog;
+    TextView lightDialog;
+    TextView howMuchLight;
+    String plant_local;
+    LinearLayout linearLayout;
 
     public static ArrayList<Notification> notifications = new ArrayList<>();
 
@@ -75,21 +91,21 @@ public class PlantInfo extends AppCompatActivity {
             return false;
         });
 
-        localPic = (ImageView) findViewById(R.id.sun);
+        localPic = findViewById(R.id.sun);
 
-        name = (TextView) findViewById(R.id.plantinfo_name);
-        localization = (TextView) findViewById(R.id.plantinfo_localization);
-        species = (TextView) findViewById(R.id.plantinfo_species);
-        notes = (TextView) findViewById(R.id.plantinfo_notes);
-        photo = (ImageView) findViewById(R.id.img_plant);
+        name = findViewById(R.id.plantinfo_name);
+        localization = findViewById(R.id.plantinfo_localization);
+        species = findViewById(R.id.plantinfo_species);
+        notes = findViewById(R.id.plantinfo_notes);
+        photo = findViewById(R.id.img_plant);
 
-        info = (TextView) findViewById(R.id.info);
-        water = (TextView) findViewById(R.id.water);
-        fertilizer = (TextView) findViewById(R.id.fertilizer);
-        repot = (TextView) findViewById(R.id.repot);
-        local = (TextView) findViewById(R.id.localization);
+        info = findViewById(R.id.info);
+        water = findViewById(R.id.water);
+        fertilizer = findViewById(R.id.fertilizer);
+        repot = findViewById(R.id.repot);
+        local = findViewById(R.id.localization);
 
-        DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+        databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
         DB = new DBHelper(this);
 
         try {
@@ -113,17 +129,21 @@ public class PlantInfo extends AppCompatActivity {
             String plant_water = databaseAccess.getWater(plant_species);
             String plant_fertilizer = databaseAccess.getFertilizer(plant_species);
             String plant_repot = databaseAccess.getRepot(plant_species);
-            String plant_local = databaseAccess.getLocal(plant_species);
+            plant_local = databaseAccess.getLocal(plant_species);
 
             info.setText(plant_info);
             water.setText(plant_water);
             fertilizer.setText(plant_fertilizer);
             repot.setText(plant_repot);
-            local.setText(plant_local);
+            if(plant_local.equals("bezpośrednie światło")){
+                local.setText("bezpośr. świało");
+            }else {
+                local.setText(plant_local);
+            }
 
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable penumbra = getDrawable(R.drawable.penumbra);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable direct = getDrawable(R.drawable.direct);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable shadow = getDrawable(R.drawable.shadow);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable penumbra = getDrawable(R.drawable.ic_penumbra);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable direct = getDrawable(R.drawable.ic_direct);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable shadow = getDrawable(R.drawable.ic_shadow);
             if(plant_local.equals("cień")) localPic.setImageDrawable(shadow);
             if(plant_local.equals("półcień")) localPic.setImageDrawable(penumbra);
             if(plant_local.equals("bezpośrednie światło")) localPic.setImageDrawable(direct);
@@ -133,12 +153,12 @@ public class PlantInfo extends AppCompatActivity {
         }
 
         /////////////////////////////water dialog///////////////////////////////////////////////////
-        ImageView watering = findViewById(R.id.water_activity);
-        watering.setOnClickListener((View.OnClickListener) v -> {
+        ConstraintLayout watering = findViewById(R.id.water_activity);
+        watering.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
             dialog.setContentView(R.layout.water_dialog);
-            Button dialogButton = (Button) dialog.findViewById(R.id.water_button);
-            EditText water_number = (EditText) dialog.findViewById(R.id.water_number);
+            Button dialogButton = dialog.findViewById(R.id.water_button);
+            EditText water_number = dialog.findViewById(R.id.water_number);
             dialogButton.setOnClickListener(v12 -> {
                 int wn = Integer.parseInt(water_number.getText().toString());
                 databaseAccess.updateWater(plant_species, wn);
@@ -156,12 +176,12 @@ public class PlantInfo extends AppCompatActivity {
                         if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                             int id = PlantInfo.notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id, water,true);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id, water,true);
                             NotificationManagerCompat.from(PlantInfo.this).cancel(id);
                             Notification notif1 = new Notification(plant.getId(),id);
                             PlantInfo.notifications.remove(notif1);
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id2, water,false);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_watercan,plant.getName(), plant.getLocalization(),"Woda", " potrzebuje wody", id2, water,false);
                             }
                         j++;
                     }
@@ -171,19 +191,19 @@ public class PlantInfo extends AppCompatActivity {
                 recreate();
             });
 
-            ImageButton water_exit = (ImageButton) dialog.findViewById(R.id.water_exit);
+            ImageButton water_exit = dialog.findViewById(R.id.water_exit);
             water_exit.setOnClickListener(v13 -> dialog.dismiss());
 
             dialog.show();
         });
 
         ///////////////////////////////fertilizer dialog////////////////////////////////////////////
-        ImageView fertilizing = findViewById(R.id.fertilizer_activity);
-        fertilizing.setOnClickListener((View.OnClickListener) v -> {
+        ConstraintLayout fertilizing = findViewById(R.id.fertilizer_activity);
+        fertilizing.setOnClickListener( v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
             dialog.setContentView(R.layout.fertilizer_dialog);
-            Button dialogButton = (Button) dialog.findViewById(R.id.fertilizer_button);
-            EditText fertilizer_number = (EditText) dialog.findViewById(R.id.fertilizer_number);
+            Button dialogButton = dialog.findViewById(R.id.fertilizer_button);
+            EditText fertilizer_number = dialog.findViewById(R.id.fertilizer_number);
             dialogButton.setOnClickListener(v1 -> {
                 int fn = Integer.parseInt(fertilizer_number.getText().toString());
                 databaseAccess.updateFertilizer(plant_species, fn);
@@ -201,12 +221,12 @@ public class PlantInfo extends AppCompatActivity {
                         if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                             int id = PlantInfo.notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id, fertilizer,true);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id, fertilizer,true);
                             NotificationManagerCompat.from(PlantInfo.this).cancel(id);
                             Notification notif1 = new Notification(plant.getId(),id);
                             PlantInfo.notifications.remove(notif1);
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id2, fertilizer,false);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,plant.getName(), plant.getLocalization(),"Nawóz", " potrzebuje nawozu", id2, fertilizer,false);
                         }
                         j++;
                     }
@@ -216,19 +236,19 @@ public class PlantInfo extends AppCompatActivity {
                 recreate();
             });
 
-            ImageButton fertilizer_exit = (ImageButton) dialog.findViewById(R.id.fertilizer_exit);
+            ImageButton fertilizer_exit = dialog.findViewById(R.id.fertilizer_exit);
             fertilizer_exit.setOnClickListener(v15 -> dialog.dismiss());
 
             dialog.show();
         });
 
         ////////////////////////////repot dialog////////////////////////////////////////////////////
-        ImageView repotting = findViewById(R.id.repot_activity);
-        repotting.setOnClickListener((View.OnClickListener) v -> {
+        ConstraintLayout repotting = findViewById(R.id.repot_activity);
+        repotting.setOnClickListener( v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
             dialog.setContentView(R.layout.repot_dialog);
-            Button dialogButton = (Button) dialog.findViewById(R.id.repot_button);
-            EditText repot_number = (EditText) dialog.findViewById(R.id.repot_number);
+            Button dialogButton = dialog.findViewById(R.id.repot_button);
+            EditText repot_number = dialog.findViewById(R.id.repot_number);
             dialogButton.setOnClickListener(v14 -> {
                 int rn = Integer.parseInt(repot_number.getText().toString());
                 databaseAccess.updateRepot(plant_species, rn);
@@ -246,12 +266,12 @@ public class PlantInfo extends AppCompatActivity {
                         if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
                             int id = PlantInfo.notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id, repot,true);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id, repot,true);
                             NotificationManagerCompat.from(PlantInfo.this).cancel(id);
                             Notification notif1 = new Notification(plant.getId(),id);
                             PlantInfo.notifications.remove(notif1);
                             createNotificationChannel();
-                            generateNotification(plant.getId(),picture,R.drawable.repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id2, repot,false);
+                            generateNotification(plant.getId(),picture,R.drawable.ic_repot,plant.getName(), plant.getLocalization(),"Przesadzanie", " potrzebuje przesadzenia", id2, repot,false);
                         }
                         j++;
                     }
@@ -261,31 +281,38 @@ public class PlantInfo extends AppCompatActivity {
                 recreate();
             });
 
-            ImageButton repot_exit = (ImageButton) dialog.findViewById(R.id.repot_exit);
+            ImageButton repot_exit = dialog.findViewById(R.id.repot_exit);
             repot_exit.setOnClickListener(v16 -> dialog.dismiss());
 
             dialog.show();
         });
 
         /////////////////////////localization dialog////////////////////////////////////////////////
-        ImageView local = findViewById(R.id.localization_activity);
-        local.setOnClickListener((View.OnClickListener) v -> {
-            final Dialog dialog = new Dialog(PlantInfo.this);
-            dialog.setContentView(R.layout.localization_dialog);
-            TextView localization_text = (TextView) dialog.findViewById(R.id.localization_text);
-            localization_text.setText(databaseAccess.getLocal(plant.getSpecies()));
-            String plant_local = databaseAccess.getLocal(plant.getSpecies());
-            ImageView localization_photo = (ImageView) dialog.findViewById(R.id.localization_photo);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable penumbra = getDrawable(R.drawable.penumbra);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable direct = getDrawable(R.drawable.direct);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable shadow = getDrawable(R.drawable.shadow);
-            if(plant_local.equals("cień")) localization_photo.setImageDrawable(shadow);
-            if(plant_local.equals("półcień")) localization_photo.setImageDrawable(penumbra);
-            if(plant_local.equals("bezpośrednie światło")) localization_photo.setImageDrawable(direct);
+        //light sensor
+        sensorManager=(SensorManager) getSystemService(Service.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        ///light sensor
+        ConstraintLayout local = findViewById(R.id.localization_activity);
+        dialog = new Dialog(PlantInfo.this);
+        dialog.setContentView(R.layout.localization_dialog);
+        TextView localization_text = dialog.findViewById(R.id.localization_text);
+        localization_text.setText(databaseAccess.getLocal(plant.getSpecies()));
+        String plant_local = databaseAccess.getLocal(plant.getSpecies());
+        ImageView localization_photo = dialog.findViewById(R.id.localization_photo);
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable penumbra = getDrawable(R.drawable.ic_penumbra);
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable direct = getDrawable(R.drawable.ic_direct);
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable shadow = getDrawable(R.drawable.ic_shadow);
+        if(plant_local.equals("cień")) localization_photo.setImageDrawable(shadow);
+        if(plant_local.equals("półcień")) localization_photo.setImageDrawable(penumbra);
+        if(plant_local.equals("bezpośrednie światło")) localization_photo.setImageDrawable(direct);
+        ImageButton localization_exit = dialog.findViewById(R.id.localization_exit);
+        localization_exit.setOnClickListener(v17 -> dialog.dismiss());
 
-            ImageButton localization_exit = (ImageButton) dialog.findViewById(R.id.localization_exit);
-            localization_exit.setOnClickListener(v17 -> dialog.dismiss());
+        lightDialog =  dialog.findViewById(R.id.light1);
+        howMuchLight = dialog.findViewById(R.id.enoughLight);
+        linearLayout = dialog.findViewById(R.id.linearLayout);
 
+        local.setOnClickListener( v -> {
             dialog.show();
         });
 
@@ -341,9 +368,9 @@ public class PlantInfo extends AppCompatActivity {
                         if (notifications.get(j).getPlantID()==plantid) {
                             int id = notifications.get(j).getNotificationID();
                             createNotificationChannel();
-                            generateNotification(plant.getId(),null,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, water,true);
-                            generateNotification(plant.getId(),null,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, fertilizer, true);
-                            generateNotification(plant.getId(),null,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, repot, true);
+                            generateNotification(plant.getId(),null,R.drawable.ic_watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", id, water,true);
+                            generateNotification(plant.getId(),null,R.drawable.ic_fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", id+1, fertilizer, true);
+                            generateNotification(plant.getId(),null,R.drawable.ic_repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", id+2, repot, true);
                             NotificationManagerCompat.from(this).cancel(id);
                             NotificationManagerCompat.from(this).cancel(id+1);
                             NotificationManagerCompat.from(this).cancel(id+2);
@@ -359,7 +386,7 @@ public class PlantInfo extends AppCompatActivity {
             }));
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-                ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
 
         }
         catch (Exception e){
@@ -409,12 +436,12 @@ public class PlantInfo extends AppCompatActivity {
 
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent); //AlarmManager.INTERVAL_DAY
-        if(cancel==true) {
+        if(cancel) {
             alarmManager.cancel(pendingIntent);
         }
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent2);
-        if(cancel==true){
+        if(cancel){
             alarmManager.cancel(pendingIntent2);
             ArrayList<Task> taskList = DB.getAllTasks();
             int j=0;
@@ -482,5 +509,50 @@ public class PlantInfo extends AppCompatActivity {
         }
 
         return 0;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_LIGHT){
+            lightDialog.setText(String.valueOf(event.values[0]));
+
+            if(event.values[0]<100){
+                linearLayout.setBackground(getDrawable(R.drawable.shape_nofill));
+                howMuchLight.setText("Zbyt ciemno");
+            }
+            else if(event.values[0]<500){
+                linearLayout.setBackground(getDrawable(R.drawable.shape_nofill));
+                howMuchLight.setText("Cień");
+                if (plant_local.equals("cień")) linearLayout.setBackground(getDrawable(R.drawable.shape_nofill_green));
+            }
+            else if(event.values[0]<5000){
+                linearLayout.setBackground(getDrawable(R.drawable.shape_nofill));
+                howMuchLight.setText("Półcień");
+                if (plant_local.equals("półcień")) linearLayout.setBackground(getDrawable(R.drawable.shape_nofill_green));
+            }
+            else if(event.values[0]>5000){
+                linearLayout.setBackground(getDrawable(R.drawable.shape_nofill));
+                howMuchLight.setText("Bezpośredni");
+                if (plant_local.equals("bezpośrednie swiatło")) linearLayout.setBackground(getDrawable(R.drawable.shape_nofill_green));
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

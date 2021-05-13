@@ -164,9 +164,9 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
-                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
-                generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
-                generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
+                generateNotification(p.getId(),picture,R.drawable.ic_watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
+                generateNotification(p.getId(),picture,R.drawable.ic_fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
+                generateNotification(p.getId(),picture,R.drawable.ic_repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
 
             } else {
                 Bitmap plant_img = BitmapFactory.decodeResource(this.getResources(), R.drawable.plant_photo);
@@ -200,9 +200,9 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
                 PlantInfo.notifications.add(notif);
 
                 createNotificationChannel();
-                generateNotification(p.getId(),picture,R.drawable.watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
-                generateNotification(p.getId(),picture,R.drawable.fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
-                generateNotification(p.getId(),picture,R.drawable.repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
+                generateNotification(p.getId(),picture,R.drawable.ic_watercan,name.getText().toString(), localization.getText().toString(),"Woda", " potrzebuje wody", notificationid, water);
+                generateNotification(p.getId(),picture,R.drawable.ic_fertilizer,name.getText().toString(), localization.getText().toString(),"Nawóz", " potrzebuje nawozu", notificationid+1, fertilizer);
+                generateNotification(p.getId(),picture,R.drawable.ic_repot,name.getText().toString(), localization.getText().toString(),"Przesadzanie", " potrzebuje przesadzenia", notificationid+2, repot);
             }
 
         }
@@ -247,10 +247,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
 
         Intent intent2 = new Intent(this, TaskBroadcast.class);
         intent2.putExtra("keyplantid", plantID);
-        intent2.putExtra("keyname",name);
         intent2.putExtra("keyactivity", activity);
-        intent2.putExtra("keylocalization", localization);
-        intent2.putExtra("keyphoto", image);
         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, id, intent2, 0);
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), time, pendingIntent); //AlarmManager.INTERVAL_DAY

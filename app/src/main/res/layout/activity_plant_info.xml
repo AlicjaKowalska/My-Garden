@@ -17,7 +17,9 @@
 
             <View
                 android:id="@+id/divider15"
-                android:layout_width="375dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="1dp"
                 android:layout_marginBottom="14dp"
                 android:background="?android:attr/listDivider"
@@ -29,7 +31,9 @@
 
             <View
                 android:id="@+id/divider4"
-                android:layout_width="375dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
                 android:background="?android:attr/listDivider"
@@ -53,62 +57,135 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/localization_activity" />
 
-            <ImageView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/localization_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@drawable/task_shape"
+                android:elevation="2dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/repot_activity"
-                app:srcCompat="@drawable/task_bar" />
+                app:layout_constraintTop_toBottomOf="@+id/repot_activity">
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                    app:layout_constraintStart_toStartOf="@+id/localization_activity"
+                    app:layout_constraintTop_toTopOf="@+id/localization_activity"
+                    app:srcCompat="@drawable/ic_sun" />
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/Lokal"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                    app:layout_constraintStart_toEndOf="@+id/imageView12"
+                    app:layout_constraintTop_toTopOf="@+id/localization_activity" />
+                <TextView
+                    android:id="@+id/localization"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text=""
+                    android:textAlignment="viewEnd"
+                    app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                    app:layout_constraintEnd_toStartOf="@+id/sun"
+                    app:layout_constraintTop_toTopOf="@+id/localization_activity" />
+                <ImageView
+                    android:id="@+id/sun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
+                    app:layout_constraintEnd_toEndOf="@+id/localization_activity"
+                    app:layout_constraintTop_toTopOf="@+id/localization_activity"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="@string/Lokal"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
-                app:layout_constraintStart_toEndOf="@+id/imageView12"
-                app:layout_constraintTop_toTopOf="@+id/localization_activity" />
-
-            <ImageView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/repot_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@drawable/task_shape"
+                android:elevation="2dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fertilizer_activity"
-                app:srcCompat="@drawable/task_bar" />
+                app:layout_constraintTop_toBottomOf="@+id/fertilizer_activity">
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                    app:layout_constraintStart_toStartOf="@+id/repot_activity"
+                    app:layout_constraintTop_toTopOf="@+id/repot_activity"
+                    app:srcCompat="@drawable/ic_repot" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/Przesadzanie"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                    app:layout_constraintStart_toEndOf="@+id/imageView11"
+                    app:layout_constraintTop_toTopOf="@+id/repot_activity" />
+                <ImageView
+                    android:id="@+id/imgView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                    app:layout_constraintEnd_toEndOf="@+id/repot_activity"
+                    app:layout_constraintTop_toTopOf="@+id/repot_activity"
+                    app:srcCompat="@drawable/ic_repeat" />
+                <TextView
+                    android:id="@+id/repot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
+                    app:layout_constraintEnd_toStartOf="@+id/imgView2"
+                    app:layout_constraintTop_toTopOf="@+id/repot_activity" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView13"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fertilizer_activity"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/task_shape"
+            android:elevation="2dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/water_activity">
+            <ImageView
+                android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="@string/Przesadzanie"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
-                app:layout_constraintStart_toEndOf="@+id/imageView11"
-                app:layout_constraintTop_toTopOf="@+id/repot_activity" />
-
-            <ImageView
-                android:id="@+id/fertilizer_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/water_activity"
-                app:srcCompat="@drawable/task_bar" />
-
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
+                app:layout_constraintStart_toStartOf="@+id/fertilizer_activity"
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
+                app:srcCompat="@drawable/ic_fertilizer" />
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
@@ -121,20 +198,86 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="@+id/fertilizer_activity" />
-
-            <ImageView
-                android:id="@+id/water_activity"
+            <TextView
+                android:id="@+id/fertilizer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
+                app:layout_constraintEnd_toStartOf="@+id/imgView1"
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity" />
+            <ImageView
+                android:id="@+id/imgView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
+                app:layout_constraintEnd_toEndOf="@+id/fertilizer_activity"
+                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
+                app:srcCompat="@drawable/ic_repeat" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/water_activity"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3"
-                app:srcCompat="@drawable/task_bar" />
+                android:background="@drawable/task_shape"
+                android:elevation="2dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="30dp">
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                    app:layout_constraintStart_toStartOf="@+id/water_activity"
+                    app:layout_constraintTop_toTopOf="@+id/water_activity"
+                    app:srcCompat="@drawable/ic_watercan" />
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/Woda"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="@+id/water_activity" />
+                <TextView
+                    android:id="@+id/water"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/water_activity"
+                    app:layout_constraintVertical_bias="0.518" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/water_activity"
+                    app:layout_constraintEnd_toEndOf="@+id/water_activity"
+                    app:layout_constraintTop_toTopOf="@+id/water_activity"
+                    app:srcCompat="@drawable/ic_repeat" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/divider3"
-                android:layout_width="375dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
                 android:background="?android:attr/listDivider"
@@ -272,34 +415,26 @@
             <include
                 android:id="@+id/toolbar_plant_info"
                 layout="@layout/toolbar_plant_info"
-                app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                app:layout_constraintBottom_toTopOf="@+id/plantinfo_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/img_plant" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:scaleX="1.1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/img_plant"
-                app:srcCompat="@drawable/plant_name_bar2" />
-
             <TextView
                 android:id="@+id/plantinfo_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/task_shape"
                 android:fontFamily="sans-serif-black"
+                android:gravity="center"
                 android:text="Nazwa"
+                android:elevation="2dp"
                 android:textColor="#000000"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_plant"/>
 
             <TextView
                 android:id="@+id/textView8"
@@ -314,11 +449,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                app:layout_constraintTop_toBottomOf="@+id/plantinfo_name" />
 
             <View
                 android:id="@+id/divider"
-                android:layout_width="375dp"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
                 android:background="?android:attr/listDivider"
@@ -341,141 +478,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-            <TextView
-                android:id="@+id/water"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/water_activity"
-                app:layout_constraintVertical_bias="0.518" />
-
-            <TextView
-                android:id="@+id/fertilizer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
-                app:layout_constraintEnd_toStartOf="@+id/imgView1"
-                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity" />
-
-            <TextView
-                android:id="@+id/repot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text=""
-                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
-                app:layout_constraintEnd_toStartOf="@+id/imgView2"
-                app:layout_constraintTop_toTopOf="@+id/repot_activity" />
-
-            <TextView
-                android:id="@+id/localization"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text=""
-                android:textAlignment="viewEnd"
-                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
-                app:layout_constraintEnd_toStartOf="@+id/sun"
-                app:layout_constraintTop_toTopOf="@+id/localization_activity" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
-                app:layout_constraintEnd_toEndOf="@+id/water_activity"
-                app:layout_constraintTop_toTopOf="@+id/water_activity"
-                app:srcCompat="@drawable/repeat" />
-
-            <ImageView
-                android:id="@+id/imgView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
-                app:layout_constraintEnd_toEndOf="@+id/fertilizer_activity"
-                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
-                app:srcCompat="@drawable/repeat" />
-
-            <ImageView
-                android:id="@+id/imgView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
-                app:layout_constraintEnd_toEndOf="@+id/repot_activity"
-                app:layout_constraintTop_toTopOf="@+id/repot_activity"
-                app:srcCompat="@drawable/repeat" />
-
-            <ImageView
-                android:id="@+id/sun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
-                app:layout_constraintEnd_toEndOf="@+id/localization_activity"
-                app:layout_constraintTop_toTopOf="@+id/localization_activity"
-                />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
-                app:layout_constraintStart_toStartOf="@+id/water_activity"
-                app:layout_constraintTop_toTopOf="@+id/water_activity"
-                app:srcCompat="@drawable/watercan" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/fertilizer_activity"
-                app:layout_constraintStart_toStartOf="@+id/fertilizer_activity"
-                app:layout_constraintTop_toTopOf="@+id/fertilizer_activity"
-                app:srcCompat="@drawable/fertilizer" />
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/repot_activity"
-                app:layout_constraintStart_toStartOf="@+id/repot_activity"
-                app:layout_constraintTop_toTopOf="@+id/repot_activity"
-                app:srcCompat="@drawable/repot" />
-
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/localization_activity"
-                app:layout_constraintStart_toStartOf="@+id/localization_activity"
-                app:layout_constraintTop_toTopOf="@+id/localization_activity"
-                app:srcCompat="@drawable/sun" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:fontFamily="sans-serif-black"
-                android:text="@string/Woda"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/water_activity"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/water_activity" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
