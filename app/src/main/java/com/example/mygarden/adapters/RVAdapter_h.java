@@ -15,11 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mygarden.Harmonogram;
 import com.example.mygarden.R;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Task;
-
 import java.util.ArrayList;
 
 public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderClassH>{
@@ -39,13 +39,13 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RVAdapter_h.RVViewHolderClassH rvViewHolderClass, int i) {
+    public void onBindViewHolder(@NonNull RVViewHolderClassH rvViewHolderClass, int i) {
         Task task = taskList.get(i);
 
         rvViewHolderClass.activity.setText(task.getActivity());
         rvViewHolderClass.name.setText(task.getName());
         rvViewHolderClass.localization.setText(task.getLocalization());
-        rvViewHolderClass.image.setImageBitmap(task.getImage());
+        Glide.with(rvViewHolderClass.image.getContext()).load(task.getImage()).into(rvViewHolderClass.image);
 
         rvViewHolderClass.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(rvViewHolderClass.checkbox.isChecked()) {
@@ -59,9 +59,7 @@ public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderCl
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(0, 0);
                         });
-                alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> {
-                    rvViewHolderClass.checkbox.toggle();
-                }));
+                alertDialogBuilder.setNegativeButton("NIE", ((dialog, which) -> rvViewHolderClass.checkbox.toggle()));
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }

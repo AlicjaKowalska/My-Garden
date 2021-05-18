@@ -1,7 +1,6 @@
 package com.example.mygarden;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.example.mygarden.adapters.GVAdapter;
-import com.example.mygarden.adapters.RVAdapter;
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.Plant;
 
@@ -26,8 +24,6 @@ import java.util.Locale;
 public class Plants extends AppCompatActivity {
 
     DBHelper DB;
-    RecyclerView objectRecyclerView;
-    RVAdapter objectRvAdapter;
     GridView gridview;
 
     @Override

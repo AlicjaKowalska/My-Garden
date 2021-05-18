@@ -13,9 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mygarden.R;
 import com.example.mygarden.database.Plant;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -56,9 +56,8 @@ public class GVAdapter extends BaseAdapter {
         Plant plant = plantList.get(position);
 
         name.setText(plant.getName());
-        image.setImageBitmap(plant.getImage());
-        //Uri img = getImageUri(context, plant.getImage());
-        //Picasso.get().load(img).into(image);
+        //image.setImageBitmap(plant.getImage());
+        Glide.with(image.getContext()).load(plant.getImage()).into(image);
 
         return view1;
     }
