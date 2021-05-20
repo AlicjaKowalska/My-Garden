@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -193,37 +192,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 Toast.makeText(context,"Nie udało się dodać zadania",Toast.LENGTH_SHORT).show();
             }
 
-        }
-        catch(Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void updateTask(Task task)
-    {
-        try{
-            SQLiteDatabase objectSqLiteDatabase=this.getWritableDatabase();
-            Bitmap imageToStoreBitmap = task.getImage();
-
-            objectByteArrayOutputStream=new ByteArrayOutputStream();
-            imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG,50,objectByteArrayOutputStream);
-
-            imageInBytes=objectByteArrayOutputStream.toByteArray();
-            ContentValues objectContentValues=new ContentValues();
-
-            objectContentValues.put("plantID",task.getPlantId());
-            objectContentValues.put("activity", task.getActivity());
-            objectContentValues.put("name", task.getName());
-            objectContentValues.put("localization", task.getLocalization());
-            objectContentValues.put("image", imageInBytes);
-
-            long checkIfQueryRuns=objectSqLiteDatabase.update("my_tasks",objectContentValues,"_idTask=?", new String[]{String.valueOf(task.getId())});
-            if(checkIfQueryRuns!=-1){
-                objectSqLiteDatabase.close();
-            }
-            else{
-                Toast.makeText(context,"Nie udało się edytować zadania",Toast.LENGTH_SHORT).show();
-            }
         }
         catch(Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();

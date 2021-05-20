@@ -8,11 +8,7 @@
 
     <include
         android:id="@+id/toolbar_add"
-        layout="@layout/toolbar_add"
-        android:elevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/toolbar_add"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,7 +17,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/imageCV"

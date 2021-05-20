@@ -417,8 +417,10 @@
                 layout="@layout/toolbar_plant_info"
                 app:layout_constraintBottom_toTopOf="@+id/plantinfo_name"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/img_plant" />
+                app:layout_constraintTop_toTopOf="@+id/img_plant"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/plantinfo_name"

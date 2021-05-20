@@ -3,13 +3,12 @@
     package="com.example.mygarden">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="My Garden"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGarden">
-        <activity android:name=".PlantInfo"></activity>
+        <activity android:name=".PlantInfo" />
         <activity android:name=".Edit" />
         <activity android:name=".Plants" />
         <activity android:name=".Add" />

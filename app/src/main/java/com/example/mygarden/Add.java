@@ -68,10 +68,10 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         }
 
         try {
-            photo = (ImageView) findViewById(R.id.image);
-            name = (EditText) findViewById(R.id.plant_name);
-            localization = (EditText) findViewById(R.id.plant_localization);
-            notes = (EditText) findViewById(R.id.plant_notes);
+            photo = findViewById(R.id.image);
+            name = findViewById(R.id.plant_name);
+            localization = findViewById(R.id.plant_localization);
+            notes = findViewById(R.id.plant_notes);
             DB = new DBHelper(this);
         }
         catch (Exception e) {
@@ -79,7 +79,7 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
         }
 
         ////////////////////////////////spinner///////////////////////////////////////////////
-        this.spinner = (Spinner) findViewById(R.id.spinner);
+        this.spinner = findViewById(R.id.spinner);
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
         List<String> plant_species = databaseAccess.getSpecies();

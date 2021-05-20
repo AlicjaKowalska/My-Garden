@@ -25,10 +25,10 @@ public class Settings extends AppCompatActivity {
         loadLocale();
         setContentView(R.layout.activity_settings);
 
-        Button previous_button = findViewById(R.id.previous_settings);
-        previous_button.setOnClickListener(v -> onBackPressed());
+        Button prev_button = findViewById(R.id.previous_settings);
+        prev_button.setOnClickListener(v -> onBackPressed());
 
-        TextView email = (TextView) findViewById(R.id.email);
+        TextView email = findViewById(R.id.email);
         email.setOnClickListener(v -> {
             final Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/plain");

@@ -9,7 +9,7 @@
     <include
         android:id="@+id/toolbar_harmonogram"
         layout="@layout/toolbar_harmonogram"
-        android:elevation="2dp"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,7 +42,7 @@
         android:id="@+id/menubar"
         layout="@layout/menubar"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

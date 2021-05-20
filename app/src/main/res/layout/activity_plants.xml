@@ -9,25 +9,16 @@
     <include
         android:id="@+id/toolbar_plants"
         layout="@layout/toolbar_plants"
-        android:elevation="2dp"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imagesRV"
-            android:layout_marginTop="2dp" />-->
-
     <GridView
         android:id="@+id/gv"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="3"
-        android:layout_weight="1"
         android:layout_above="@+id/menubar"
         android:layout_below="@+id/toolbar_plants">
     </GridView>
@@ -36,7 +27,7 @@
         android:id="@+id/menubar"
         layout="@layout/menubar"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

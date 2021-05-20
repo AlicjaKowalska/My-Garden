@@ -73,7 +73,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
 
     public static ArrayList<Notification> notifications = new ArrayList<>();
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,9 +312,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
         howMuchLight = dialog.findViewById(R.id.enoughLight);
         linearLayout = dialog.findViewById(R.id.linearLayout);
 
-        local.setOnClickListener( v -> {
-            dialog.show();
-        });
+        local.setOnClickListener( v -> dialog.show());
 
 
         /////////////////////////////////nav bar////////////////////////////////////////////////////

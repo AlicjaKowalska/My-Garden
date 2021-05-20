@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
-    android:elevation="10dp">
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00FFFFFF"
-        android:elevation="2dp">
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:src="@drawable/top_shadow"
+            app:layout_constraintBottom_toTopOf="@+id/menu_bar"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/menu_bar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@color/white"
-            android:elevation="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="2dp"
+                android:layout_height="70dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/plants"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="135dp"
                     android:layout_height="70dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
                     android:clickable="true"
-                    android:drawableRight="@drawable/ic_plants"
+                    android:drawableEnd="@drawable/ic_plants"
+                    android:focusable="true"
                     android:scaleX="0.75"
                     android:scaleY="0.75"
                     app:backgroundTint="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add"
@@ -55,10 +56,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="2dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
                     android:clickable="true"
-                    android:drawableRight="@drawable/ic_add"
+                    android:drawableEnd="@drawable/ic_add"
+                    android:focusable="true"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     android:textAlignment="center"
@@ -68,30 +68,29 @@
                     app:layout_constraintHorizontal_bias="0.48"
                     app:layout_constraintStart_toEndOf="@+id/harmonogram"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"/>
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/harmonogram"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="135dp"
                     android:layout_height="70dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
                     android:clickable="true"
-                    android:drawableRight="@drawable/ic_harmonogram"
+                    android:drawableEnd="@drawable/ic_harmonogram"
+                    android:focusable="true"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
                     app:backgroundTint="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/divider10"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="?android:attr/listDivider"
-                    android:elevation="2dp"
+                    android:elevation="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/add" />
