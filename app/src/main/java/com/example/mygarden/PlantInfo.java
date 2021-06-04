@@ -40,9 +40,9 @@ import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
-import com.example.mygarden.database.Notification;
-import com.example.mygarden.database.Plant;
-import com.example.mygarden.database.Task;
+import com.example.mygarden.model.Notification;
+import com.example.mygarden.model.Plant;
+import com.example.mygarden.model.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -156,7 +156,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
         ConstraintLayout watering = findViewById(R.id.water_activity);
         watering.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
-            dialog.setContentView(R.layout.water_dialog);
+            dialog.setContentView(R.layout.dialog_water);
             Button dialogButton = dialog.findViewById(R.id.water_button);
             EditText water_number = dialog.findViewById(R.id.water_number);
             dialogButton.setOnClickListener(v12 -> {
@@ -201,7 +201,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
         ConstraintLayout fertilizing = findViewById(R.id.fertilizer_activity);
         fertilizing.setOnClickListener( v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
-            dialog.setContentView(R.layout.fertilizer_dialog);
+            dialog.setContentView(R.layout.dialog_fertilizer);
             Button dialogButton = dialog.findViewById(R.id.fertilizer_button);
             EditText fertilizer_number = dialog.findViewById(R.id.fertilizer_number);
             dialogButton.setOnClickListener(v1 -> {
@@ -246,7 +246,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
         ConstraintLayout repotting = findViewById(R.id.repot_activity);
         repotting.setOnClickListener( v -> {
             final Dialog dialog = new Dialog(PlantInfo.this);
-            dialog.setContentView(R.layout.repot_dialog);
+            dialog.setContentView(R.layout.dialog_repot);
             Button dialogButton = dialog.findViewById(R.id.repot_button);
             EditText repot_number = dialog.findViewById(R.id.repot_number);
             dialogButton.setOnClickListener(v14 -> {
@@ -294,7 +294,7 @@ public class PlantInfo extends AppCompatActivity implements SensorEventListener 
         ///light sensor
         ConstraintLayout local = findViewById(R.id.localization_activity);
         dialog = new Dialog(PlantInfo.this);
-        dialog.setContentView(R.layout.localization_dialog);
+        dialog.setContentView(R.layout.dialog_localization);
         TextView localization_text = dialog.findViewById(R.id.localization_text);
         localization_text.setText(databaseAccess.getLocal(plant.getSpecies()));
         String plant_local = databaseAccess.getLocal(plant.getSpecies());

@@ -1,5 +1,4 @@
-package com.example.mygarden.database;
-
+package com.example.mygarden.model;
 import android.graphics.Bitmap;
 
 public class Plant{
@@ -13,8 +12,7 @@ public class Plant{
 
     public Plant(){}
 
-    public Plant(String name, String localization, String species, String notes, Bitmap image)
-    {
+    public Plant(String name, String localization, String species, String notes, Bitmap image) {
         this.name = name;
         this.localization = localization;
         this.species = species;

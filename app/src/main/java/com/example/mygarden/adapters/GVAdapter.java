@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mygarden.R;
-import com.example.mygarden.database.Plant;
+import com.example.mygarden.model.Plant;
 
 import java.util.ArrayList;
 

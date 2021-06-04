@@ -9,14 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
 import com.example.mygarden.adapters.GVAdapter;
 import com.example.mygarden.database.DBHelper;
-import com.example.mygarden.database.Plant;
+import com.example.mygarden.model.Plant;
 
 import java.util.ArrayList;
 import java.util.Locale;

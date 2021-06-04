@@ -1,5 +1,6 @@
 package com.example.mygarden;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,8 +31,8 @@ import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
-import com.example.mygarden.database.Notification;
-import com.example.mygarden.database.Plant;
+import com.example.mygarden.model.Notification;
+import com.example.mygarden.model.Plant;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -52,20 +53,28 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
     public Bitmap imageToStore;
     private static final int PICK_IMAGE_REQUEST=100;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_add);
 
-        try {
-            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
-            field.setAccessible(true);
-            field.set(null, 50 * 1024 * 1024); //the 100MB is the new size
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ////////////////////////////////spinner///////////////////////////////////////////////
+        this.spinner = findViewById(R.id.spinner);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        List<String> plant_species = databaseAccess.getSpecies();
+        databaseAccess.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_custom, plant_species);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        this.spinner.setAdapter(adapter);
+        //////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////button - previous////////////////////////////////////////
+        Button previous_button = findViewById(R.id.previous_add);
+        previous_button.setOnClickListener(v -> onBackPressed());
+        ////////////////////////////////////////////////////////////////////////////////////////////
 
         try {
             photo = findViewById(R.id.image);
@@ -78,23 +87,13 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        ////////////////////////////////spinner///////////////////////////////////////////////
-        this.spinner = findViewById(R.id.spinner);
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-        databaseAccess.open();
-        List<String> plant_species = databaseAccess.getSpecies();
-        databaseAccess.close();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner, plant_species);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        this.spinner.setAdapter(adapter);
-        //////////////////////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////button - previous////////////////////////////////////////
-        Button previous_button = findViewById(R.id.previous_add);
-        previous_button.setOnClickListener(v -> onBackPressed());
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 50 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /////////////////////////////////////////image//////////////////////////////////////////////
@@ -210,8 +209,6 @@ public class Add extends AppCompatActivity implements AdapterView.OnItemSelected
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     public void createNotificationChannel() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

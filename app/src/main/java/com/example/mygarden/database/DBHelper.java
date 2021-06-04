@@ -10,6 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
+import com.example.mygarden.model.Plant;
+import com.example.mygarden.model.Task;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 

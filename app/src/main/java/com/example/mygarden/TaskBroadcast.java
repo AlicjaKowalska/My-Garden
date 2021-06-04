@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.example.mygarden.database.DBHelper;
-import com.example.mygarden.database.Plant;
-import com.example.mygarden.database.Task;
+import com.example.mygarden.model.Plant;
+import com.example.mygarden.model.Task;
 
 public class TaskBroadcast extends BroadcastReceiver {
     @Override

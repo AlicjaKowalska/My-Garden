@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.mygarden.Harmonogram;
 import com.example.mygarden.R;
 import com.example.mygarden.database.DBHelper;
-import com.example.mygarden.database.Task;
+import com.example.mygarden.model.Task;
 import java.util.ArrayList;
 
 public class RVAdapter_h extends RecyclerView.Adapter<RVAdapter_h.RVViewHolderClassH>{

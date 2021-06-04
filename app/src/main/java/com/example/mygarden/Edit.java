@@ -29,9 +29,9 @@ import android.widget.Toast;
 
 import com.example.mygarden.database.DBHelper;
 import com.example.mygarden.database.DatabaseAccess;
-import com.example.mygarden.database.Notification;
-import com.example.mygarden.database.Plant;
-import com.example.mygarden.database.Task;
+import com.example.mygarden.model.Notification;
+import com.example.mygarden.model.Plant;
+import com.example.mygarden.model.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -78,7 +78,7 @@ public class Edit extends AppCompatActivity {
         List<String> plant_species = databaseAccess.getSpecies();
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner, plant_species);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_custom, plant_species);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         this.species.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////////////
@@ -111,74 +111,93 @@ public class Edit extends AppCompatActivity {
 
     ///////////////////////////////////////update data//////////////////////////////////////////////
     public void updateData(View view){
-        try{
+        try {
             edit_id = getIntent().getIntExtra("editid", 0);
-            DatabaseAccess dbAccess=DatabaseAccess.getInstance(getApplicationContext());
+            DatabaseAccess dbAccess = DatabaseAccess.getInstance(getApplicationContext());
             DB = new DBHelper(this);
             plant = DB.getPlant(edit_id);
 
-            if(name.getText().toString().equals(plant.getName())) plant.setName(plant.getName()); else plant.setName(name.getText().toString());
-            if(localization.getText().toString().equals(plant.getLocalization())) plant.setLocalization(plant.getLocalization()); else plant.setLocalization(localization.getText().toString());
-            if(species.getSelectedItem().toString().equals(plant.getSpecies())) plant.setSpecies(plant.getSpecies()); else plant.setSpecies(species.getSelectedItem().toString());
-            if(notes.getText().toString().equals(plant.getNotes())) plant.setNotes(plant.getNotes());  else  plant.setNotes(notes.getText().toString());
-            if(imageToStore==null) plant.setImage(plant.getImage()); else plant.setImage(imageToStore);
+            if (name.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Podaj nazwę rośliny", Toast.LENGTH_SHORT).show();
+            } else if (localization.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Podaj lokalizację rośliny", Toast.LENGTH_SHORT).show();
+            } else {
+                if (name.getText().toString().equals(plant.getName()))
+                    plant.setName(plant.getName());
+                else plant.setName(name.getText().toString());
+                if (localization.getText().toString().equals(plant.getLocalization()))
+                    plant.setLocalization(plant.getLocalization());
+                else plant.setLocalization(localization.getText().toString());
+                if (species.getSelectedItem().toString().equals(plant.getSpecies()))
+                    plant.setSpecies(plant.getSpecies());
+                else plant.setSpecies(species.getSelectedItem().toString());
+                if (notes.getText().toString().equals(plant.getNotes()))
+                    plant.setNotes(plant.getNotes());
+                else plant.setNotes(notes.getText().toString());
+                if (imageToStore == null) plant.setImage(plant.getImage());
+                else plant.setImage(imageToStore);
 
-            DB.updateData(plant);
-            Intent i = new Intent(Edit.this, PlantInfo.class);
-            i.putExtra("keyid", edit_id);
-            startActivity(i);
-            overridePendingTransition(0,0 );
+                DB.updateData(plant);
+                Intent i = new Intent(Edit.this, PlantInfo.class);
+                i.putExtra("keyid", edit_id);
+                startActivity(i);
+                overridePendingTransition(0, 0);
 
 
-            ///////////////////////////////notifications////////////////////////////////////////////
-            DatabaseAccess databaseAccess=DatabaseAccess.getInstance(getApplicationContext());
+                ///////////////////////////////notifications////////////////////////////////////////////
+                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
 
-            databaseAccess.open();
-            int[] wfr = databaseAccess.getWFR(species.getSelectedItem().toString());
-            int water = wfr[0] *24* 60*60*1000;
-            int fertilizer = wfr[1]*24* 60*60*1000;
-            int  repot = wfr[2]*24* 60*60*1000;
-            databaseAccess.close();
+                databaseAccess.open();
+                int[] wfr = databaseAccess.getWFR(species.getSelectedItem().toString());
+                int water = wfr[0] * 24 * 60 * 60 * 1000;
+                int fertilizer = wfr[1] * 24 * 60 * 60 * 1000;
+                int repot = wfr[2] * 24 * 60 * 60 * 1000;
+                databaseAccess.close();
 
-            String n, l;
-            Bitmap p;
+                String n, l;
+                Bitmap p;
 
-            if(name.getText().toString().equals(plant.getName())) n = plant.getName(); else n = name.getText().toString();
-            if(localization.getText().toString().equals(plant.getLocalization())) l = plant.getLocalization(); else l = localization.getText().toString();
-            if(imageToStore==null) p = plant.getImage(); else p = imageToStore;
+                if (name.getText().toString().equals(plant.getName())) n = plant.getName();
+                else n = name.getText().toString();
+                if (localization.getText().toString().equals(plant.getLocalization()))
+                    l = plant.getLocalization();
+                else l = localization.getText().toString();
+                if (imageToStore == null) p = plant.getImage();
+                else p = imageToStore;
 
-            ByteArrayOutputStream blob = new ByteArrayOutputStream();
-            p.compress(Bitmap.CompressFormat.JPEG, 0 , blob);
-            byte[] picture = blob.toByteArray();
+                ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                p.compress(Bitmap.CompressFormat.JPEG, 0, blob);
+                byte[] picture = blob.toByteArray();
 
-            int id2 = (int) System.currentTimeMillis();
-            Notification notif = new Notification(plant.getId(),id2);
-            PlantInfo.notifications.add(notif);
+                int id2 = (int) System.currentTimeMillis();
+                Notification notif = new Notification(plant.getId(), id2);
+                PlantInfo.notifications.add(notif);
 
-            int j=0;
-            if(PlantInfo.notifications.size()>0) {
-                while (j < PlantInfo.notifications.size()) {
-                    if (PlantInfo.notifications.get(j).getPlantID()==plant.getId()) {
-                        int id = PlantInfo.notifications.get(j).getNotificationID();
-                        createNotificationChannel();
-                        generateNotification(plant.getId(),picture,R.drawable.ic_watercan,n, l,"Woda", " potrzebuje wody", id, water,true);
-                        generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id+1, fertilizer,true);
-                        generateNotification(plant.getId(),picture,R.drawable.ic_repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id+2, repot,true);
-                        NotificationManagerCompat.from(this).cancel(id);
-                        NotificationManagerCompat.from(this).cancel(id+1);
-                        NotificationManagerCompat.from(this).cancel(id+2);
-                        Notification notif1 = new Notification(plant.getId(),id);
-                        PlantInfo.notifications.remove(notif1);
-                        createNotificationChannel();
-                        generateNotification(plant.getId(),picture,R.drawable.ic_watercan,n, l,"Woda", " potrzebuje wody", id2, water,false);
-                        generateNotification(plant.getId(),picture,R.drawable.ic_fertilizer,n, l,"Nawóz", " potrzebuje nawozu", id2+1, fertilizer,false);
-                        generateNotification(plant.getId(),picture,R.drawable.ic_repot,n, l,"Przesadzanie", " potrzebuje przesadzenia", id2+2, repot,false);
+                int j = 0;
+                if (PlantInfo.notifications.size() > 0) {
+                    while (j < PlantInfo.notifications.size()) {
+                        if (PlantInfo.notifications.get(j).getPlantID() == plant.getId()) {
+                            int id = PlantInfo.notifications.get(j).getNotificationID();
+                            createNotificationChannel();
+                            generateNotification(plant.getId(), picture, R.drawable.ic_watercan, n, l, "Woda", " potrzebuje wody", id, water, true);
+                            generateNotification(plant.getId(), picture, R.drawable.ic_fertilizer, n, l, "Nawóz", " potrzebuje nawozu", id + 1, fertilizer, true);
+                            generateNotification(plant.getId(), picture, R.drawable.ic_repot, n, l, "Przesadzanie", " potrzebuje przesadzenia", id + 2, repot, true);
+                            NotificationManagerCompat.from(this).cancel(id);
+                            NotificationManagerCompat.from(this).cancel(id + 1);
+                            NotificationManagerCompat.from(this).cancel(id + 2);
+                            Notification notif1 = new Notification(plant.getId(), id);
+                            PlantInfo.notifications.remove(notif1);
+                            createNotificationChannel();
+                            generateNotification(plant.getId(), picture, R.drawable.ic_watercan, n, l, "Woda", " potrzebuje wody", id2, water, false);
+                            generateNotification(plant.getId(), picture, R.drawable.ic_fertilizer, n, l, "Nawóz", " potrzebuje nawozu", id2 + 1, fertilizer, false);
+                            generateNotification(plant.getId(), picture, R.drawable.ic_repot, n, l, "Przesadzanie", " potrzebuje przesadzenia", id2 + 2, repot, false);
+                        }
+                        j++;
                     }
-                    j++;
                 }
             }
-        }
-        catch (Exception e){
+            }
+        catch(Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
