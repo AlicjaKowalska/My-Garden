@@ -10,7 +10,7 @@ Plant care scheduler for Android
 
 • removing a plant from the plant list
 
-<img src="https://i.imgur.com/y0C1e8u.png" width=30% height=30%><img src="https://i.imgur.com/o52phKc.png" width=30% height=30%><img src="https://i.imgur.com/sRiojRF.png" width=30% height=30%>
+<img src="https://i.imgur.com/o52phKc.png" width=40% height=40%><img src="https://i.imgur.com/sRiojRF.png" width=40% height=40%><img src="https://i.imgur.com/y0C1e8u.png" width=40% height=40%>
 
 • changing the frequency of watering the plant
 
@@ -18,15 +18,13 @@ Plant care scheduler for Android
 
 • changing the frequency of transplanting the plant
 
-<img src="https://i.imgur.com/9ZNap5p.png" width=30% height=30%>
-<img src="https://i.imgur.com/Qe4V4VT.png" width=30% height=30%>
+<img src="https://i.imgur.com/9ZNap5p.png" width=40% height=40%><img src="https://i.imgur.com/Qe4V4VT.png" width=40% height=40%>
 
 • selecting location of the plant using a light sensor,
 
-<img src="https://i.imgur.com/KpTVTn7.png" width=30% height=30%>
-<img src="https://i.imgur.com/kqqMLkg.png" width=30% height=30%>
+<img src="https://i.imgur.com/KpTVTn7.png" width=40% height=40%><img src="https://i.imgur.com/kqqMLkg.png" width=40% height=40%>
 
 • marking a task and removing it from the task list
 
-<img src="https://i.imgur.com/stxD9G0.png" width=30% height=30%>
+<img src="https://i.imgur.com/stxD9G0.png" width=40% height=40%>
 
