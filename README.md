@@ -10,9 +10,7 @@ Plant care scheduler for Android
 
 • removing a plant from the plant list
 
-![PLANTS](https://i.imgur.com/y0C1e8u.png)
-![ADD](https://i.imgur.com/o52phKc.png)
-![EDIT](https://i.imgur.com/sRiojRF.png)
+<img src="https://i.imgur.com/y0C1e8u.png" width=30% height=30%><img src="https://i.imgur.com/o52phKc.png" width=30% height=30%><img src="https://i.imgur.com/sRiojRF.png" width=30% height=30%>
 
 • changing the frequency of watering the plant
 
@@ -20,14 +18,15 @@ Plant care scheduler for Android
 
 • changing the frequency of transplanting the plant
 
-![DETAILS1](https://i.imgur.com/9ZNap5p.png)
-![DETAILS2](https://i.imgur.com/Qe4V4VT.png)
+<img src="https://i.imgur.com/9ZNap5p.png" width=30% height=30%>
+<img src="https://i.imgur.com/Qe4V4VT.png" width=30% height=30%>
 
 • selecting location of the plant using a light sensor,
 
-![LOCATION1](https://i.imgur.com/KpTVTn7.png)
-![LOCATION2](https://i.imgur.com/kqqMLkg.png)
+<img src="https://i.imgur.com/KpTVTn7.png" width=30% height=30%>
+<img src="https://i.imgur.com/kqqMLkg.png" width=30% height=30%>
 
 • marking a task and removing it from the task list
 
-![SCHEDULE](https://i.imgur.com/stxD9G0.png)
+<img src="https://i.imgur.com/stxD9G0.png" width=30% height=30%>
+
